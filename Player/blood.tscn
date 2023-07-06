@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxq3bce04os2x"]
+
+[sub_resource type="Gradient" id="Gradient_goex5"]
+colors = PackedColorArray(0.952118, 0, 0.0148959, 1, 0.52549, 0, 0.00392157, 0.337255)
+
+[node name="Blood" type="CPUParticles2D"]
+explosiveness = 0.5
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector2(-30, -10)
+gravity = Vector2(0, 45)
+initial_velocity_max = 30.0
+scale_amount_max = 2.0
+color = Color(0.952941, 0, 0.0156863, 1)
+color_ramp = SubResource("Gradient_goex5")

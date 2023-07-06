@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgmkblsed533o"]
+
+[ext_resource type="Texture2D" uid="uid://djcxv51ex7sfb" path="res://Assets/plataforma_traspasable.png" id="1_q2mwy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2lyji"]
+size = Vector2(32, 8)
+
+[node name="Traspasable_platform" type="StaticBody2D" groups=["platform"]]
+texture_filter = 1
+
+[node name="col_platform" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_2lyji")
+one_way_collision = true
+
+[node name="spr_platform" type="Sprite2D" parent="."]
+position = Vector2(0, 16)
+texture = ExtResource("1_q2mwy")

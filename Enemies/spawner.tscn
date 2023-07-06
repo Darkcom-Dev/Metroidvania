@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://h04a8n86ol3q"]
+
+[ext_resource type="Script" path="res://Enemies/spawner.gd" id="1_sf83g"]
+[ext_resource type="PackedScene" uid="uid://dv2v5jnctc4lb" path="res://Enemies/saucer.tscn" id="2_af6r2"]
+[ext_resource type="Texture2D" uid="uid://cq8x4c3k7vxql" path="res://icon.svg" id="3_qw8gl"]
+
+[node name="Spawner" type="Node2D"]
+script = ExtResource("1_sf83g")
+range_max = 768
+spawn_points = 10
+scene = ExtResource("2_af6r2")
+
+[node name="spawn_timer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[node name="spr_spawner" type="Sprite2D" parent="."]
+texture = ExtResource("3_qw8gl")
+
+[connection signal="timeout" from="spawn_timer" to="." method="_on_spawn_timer_timeout"]

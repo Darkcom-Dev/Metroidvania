@@ -1,0 +1,115 @@
+[gd_scene load_steps=17 format=3 uid="uid://fnnv1gj2x6bs"]
+
+[ext_resource type="Script" path="res://Level/coin_dropeable.gd" id="1_nwli1"]
+[ext_resource type="Script" path="res://Level/coin.gd" id="1_wwvrt"]
+[ext_resource type="Texture2D" uid="uid://bvv6rmf7nytmm" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Gold Coin/01.png" id="2_1qdvm"]
+[ext_resource type="Texture2D" uid="uid://d2bp4c3njxs63" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Coin Effect/01.png" id="3_dqhel"]
+[ext_resource type="Texture2D" uid="uid://dlxc76t74oaki" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Coin Effect/02.png" id="4_87eur"]
+[ext_resource type="Texture2D" uid="uid://cpac3lpo2rf6x" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Coin Effect/03.png" id="5_yinne"]
+[ext_resource type="Texture2D" uid="uid://bitrqa6dy5k78" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Gold Coin/02.png" id="6_bpgbs"]
+[ext_resource type="Texture2D" uid="uid://b4m275ax0rpiy" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Gold Coin/03.png" id="7_uiyx7"]
+[ext_resource type="Texture2D" uid="uid://cxauut7wf3cm" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Gold Coin/04.png" id="8_uq0kn"]
+[ext_resource type="AudioStream" uid="uid://l8lwjo7yf6xv" path="res://Assets/coin_trim.ogg" id="9_3wpfp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6facs"]
+radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_inb1m"]
+radius = 12.0
+
+[sub_resource type="Animation" id="Animation_6suf5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_1qdvm")]
+}
+
+[sub_resource type="Animation" id="Animation_4husf"]
+resource_name = "effect"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("3_dqhel"), ExtResource("4_87eur"), ExtResource("5_yinne")]
+}
+
+[sub_resource type="Animation" id="Animation_1rwbn"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("2_1qdvm"), ExtResource("6_bpgbs"), ExtResource("7_uiyx7"), ExtResource("8_uq0kn")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4ejfj"]
+_data = {
+"RESET": SubResource("Animation_6suf5"),
+"effect": SubResource("Animation_4husf"),
+"idle": SubResource("Animation_1rwbn")
+}
+
+[node name="Coin_dropeable" type="CharacterBody2D"]
+collision_layer = 8
+script = ExtResource("1_nwli1")
+
+[node name="col_drop" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_6facs")
+debug_color = Color(0, 0.643137, 0.329412, 0.419608)
+
+[node name="Coin_dropeable" type="Area2D" parent="."]
+collision_mask = 2
+gravity_point = true
+gravity_point_unit_distance = 5.0
+script = ExtResource("1_wwvrt")
+
+[node name="col_coin" type="CollisionShape2D" parent="Coin_dropeable"]
+shape = SubResource("CircleShape2D_inb1m")
+
+[node name="anim_coin" type="AnimationPlayer" parent="Coin_dropeable"]
+root_node = NodePath("../spr_coin")
+autoplay = "idle"
+libraries = {
+"": SubResource("AnimationLibrary_4ejfj")
+}
+
+[node name="spr_coin" type="Sprite2D" parent="Coin_dropeable"]
+texture_filter = 1
+texture = ExtResource("2_1qdvm")
+
+[node name="coin_sfx" type="AudioStreamPlayer2D" parent="Coin_dropeable"]
+stream = ExtResource("9_3wpfp")
+bus = &"SFX"
+
+[node name="autodestruct" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[connection signal="body_entered" from="Coin_dropeable" to="Coin_dropeable" method="_on_body_entered" flags=18]
+[connection signal="tree_exited" from="Coin_dropeable" to="." method="_on_coin_dropeable_tree_exited"]
+[connection signal="finished" from="Coin_dropeable/coin_sfx" to="Coin_dropeable" method="_on_coin_sfx_finished" flags=18]
+[connection signal="timeout" from="autodestruct" to="." method="_on_autodestruct_timeout"]

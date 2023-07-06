@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://u2fr238webu7"]
+
+[ext_resource type="PackedScene" uid="uid://bvp5nggx3l4m2" path="res://Level/room_template.tscn" id="1_3ub2f"]
+[ext_resource type="Script" path="res://Level/level.gd" id="1_d2142"]
+[ext_resource type="TileSet" uid="uid://0fsu1w3lo3xb" path="res://Level/JungleTileSet.tres" id="2_x4jbm"]
+[ext_resource type="PackedScene" uid="uid://bcf8bq8rxhi8m" path="res://Level/change_room.tscn" id="3_q4a3l"]
+
+[node name="Room" type="Node2D"]
+editor_description = "Escena general de donde heredar otras escenas
+1 - Ubique el transform de la escena con coordenadas mundiales
+2 - Agregue marcadores con nombres de las escenas vecinas y asignelos a la lista del script del nivel
+3 - Agregue change_rooms a la escena y asigne la ruta de la escena vecina a cargar."
+script = ExtResource("1_d2142")
+limit_right = 768
+limit_bottom = 432
+arrivals = [NodePath("left_place"), NodePath("right_place")]
+default_position = Vector2(384, 216)
+
+[node name="Room_Template" parent="." instance=ExtResource("1_3ub2f")]
+visible = false
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("2_x4jbm")
+format = 2
+layer_0/tile_data = PackedInt32Array(1703983, 524288, 6, 1638447, 524288, 2, 1703982, 393216, 6, 1638446, 458752, 2, 1703981, 327680, 6, 1638445, 327680, 2, 1703980, 393216, 6, 1638444, 327680, 2, 1703979, 458752, 6, 1638443, 327680, 2, 1703978, 458752, 6, 1638442, 327680, 2, 1703977, 458752, 6, 1638441, 327680, 2, 1703976, 393216, 6, 1638440, 458752, 2, 1703975, 393216, 6, 1638439, 393216, 2, 1703974, 458752, 6, 1638438, 458752, 2, 1703973, 393216, 6, 1638437, 327680, 2, 1703972, 327680, 6, 1638436, 393216, 2, 1703971, 327680, 6, 1638435, 458752, 2, 1703970, 327680, 6, 1638434, 327680, 2, 1703969, 458752, 6, 1638433, 458752, 2, 1703968, 458752, 6, 1638432, 327680, 2, 1703967, 327680, 6, 1638431, 393216, 2, 1703966, 327680, 6, 1638430, 393216, 2, 1703965, 327680, 6, 1638429, 327680, 2, 1703964, 327680, 6, 1638428, 393216, 2, 1703963, 327680, 6, 1638427, 393216, 2, 1703962, 393216, 6, 1638426, 327680, 2, 1703961, 327680, 6, 1638425, 393216, 2, 1703960, 327680, 6, 1638424, 327680, 2, 1703959, 458752, 6, 1638423, 393216, 2, 1703958, 458752, 6, 1638422, 458752, 2, 1703957, 327680, 6, 1638421, 393216, 2, 1703956, 393216, 6, 1638420, 458752, 2, 1703955, 393216, 6, 1638419, 458752, 2, 1703954, 458752, 6, 1638418, 327680, 2, 1703953, 393216, 6, 1638417, 327680, 2, 1703952, 393216, 6, 1638416, 327680, 2, 1703951, 393216, 6, 1638415, 393216, 2, 1703950, 458752, 6, 1638414, 458752, 2, 1703949, 393216, 6, 1638413, 393216, 2, 1703948, 327680, 6, 1638412, 393216, 2, 1703947, 458752, 6, 1638411, 458752, 2, 1703946, 393216, 6, 1638410, 458752, 2, 1703945, 327680, 6, 1638409, 393216, 2, 1703944, 327680, 6, 1638408, 327680, 2, 1703943, 327680, 6, 1638407, 327680, 2, 1703942, 327680, 6, 1638406, 327680, 2, 1703941, 393216, 6, 1638405, 327680, 2, 1703940, 458752, 6, 1638404, 327680, 2, 1703939, 393216, 6, 1638403, 327680, 2, 1703938, 458752, 6, 1638402, 393216, 2, 1703937, 393216, 6, 1638401, 458752, 2, 1703936, 262144, 6, 1638400, 262144, 2)
+
+[node name="Left" parent="." instance=ExtResource("3_q4a3l")]
+position = Vector2(8, 296)
+
+[node name="Right" parent="." instance=ExtResource("3_q4a3l")]
+position = Vector2(760, 296)
+
+[node name="left_place" type="Marker2D" parent="."]
+position = Vector2(40, 384)
+
+[node name="right_place" type="Marker2D" parent="."]
+position = Vector2(728, 384)

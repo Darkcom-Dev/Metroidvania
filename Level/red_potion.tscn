@@ -1,0 +1,73 @@
+[gd_scene load_steps=13 format=3 uid="uid://cxuwx7lieievn"]
+
+[ext_resource type="Texture2D" uid="uid://tyn5oo73lk5" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Red Potion/01.png" id="1_3hwvb"]
+[ext_resource type="Script" path="res://Level/red_potion.gd" id="1_mtw5g"]
+[ext_resource type="Texture2D" uid="uid://b46wtenfwqcq1" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Red Potion/02.png" id="2_7xytl"]
+[ext_resource type="Texture2D" uid="uid://d2r61qk08xuqm" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Red Potion/03.png" id="3_bt4bp"]
+[ext_resource type="Texture2D" uid="uid://0mv3nba7hph0" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Red Potion/04.png" id="4_s2tfr"]
+[ext_resource type="Texture2D" uid="uid://cyk4r2lc4f0ap" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Red Potion/05.png" id="5_11jy8"]
+[ext_resource type="Texture2D" uid="uid://c7ejb5vb2n43k" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Red Potion/06.png" id="6_e30hn"]
+[ext_resource type="Texture2D" uid="uid://b6fcgexn5c8l6" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Red Potion/07.png" id="7_it13r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r0xdp"]
+size = Vector2(16, 16)
+
+[sub_resource type="Animation" id="Animation_olkai"]
+resource_name = "Idle"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_potion:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("1_3hwvb"), ExtResource("2_7xytl"), ExtResource("3_bt4bp"), ExtResource("4_s2tfr"), ExtResource("5_11jy8"), ExtResource("6_e30hn"), ExtResource("7_it13r")]
+}
+
+[sub_resource type="Animation" id="Animation_1kjdv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_potion:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_3hwvb")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w3bfu"]
+_data = {
+"Idle": SubResource("Animation_olkai"),
+"RESET": SubResource("Animation_1kjdv")
+}
+
+[node name="Red_potion" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_mtw5g")
+
+[node name="col_potion" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_r0xdp")
+
+[node name="spr_potion" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_3hwvb")
+
+[node name="anim_potion" type="AnimationPlayer" parent="."]
+autoplay = "Idle"
+libraries = {
+"": SubResource("AnimationLibrary_w3bfu")
+}
+
+[node name="coin_audio" type="AudioStreamPlayer" parent="."]
+bus = &"SFX"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

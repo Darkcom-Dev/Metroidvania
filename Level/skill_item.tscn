@@ -1,0 +1,94 @@
+[gd_scene load_steps=14 format=3 uid="uid://dm67gg6b8kbas"]
+
+[ext_resource type="Texture2D" uid="uid://dnrkdxco1kcnx" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Blue Diamond/01.png" id="1_h71sg"]
+[ext_resource type="Script" path="res://Level/skill_item.gd" id="1_x4mgg"]
+[ext_resource type="Texture2D" uid="uid://w1npg5qcfrkr" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Blue Diamond/02.png" id="2_wra4j"]
+[ext_resource type="Texture2D" uid="uid://csmdslrc7lb7o" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Blue Diamond/03.png" id="3_7xe03"]
+[ext_resource type="Texture2D" uid="uid://h7kfbrpaqdrk" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Blue Diamond/04.png" id="4_3ht7p"]
+[ext_resource type="Texture2D" uid="uid://d2bp4c3njxs63" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Coin Effect/01.png" id="5_1nqtr"]
+[ext_resource type="Texture2D" uid="uid://dlxc76t74oaki" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Coin Effect/02.png" id="6_cef7h"]
+[ext_resource type="Texture2D" uid="uid://cpac3lpo2rf6x" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Coin Effect/03.png" id="7_4qtj7"]
+
+[sub_resource type="Animation" id="Animation_2fe8a"]
+resource_name = "Effect"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("5_1nqtr"), ExtResource("6_cef7h"), ExtResource("7_4qtj7"), null]
+}
+
+[sub_resource type="Animation" id="Animation_3epgu"]
+resource_name = "Idle"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("1_h71sg"), ExtResource("2_wra4j"), ExtResource("3_7xe03"), ExtResource("4_3ht7p")]
+}
+
+[sub_resource type="Animation" id="Animation_o3nbh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_h71sg")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j0qff"]
+_data = {
+"Effect": SubResource("Animation_2fe8a"),
+"Idle": SubResource("Animation_3epgu"),
+"RESET": SubResource("Animation_o3nbh")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rdlrs"]
+radius = 8.0
+
+[node name="Skill_item" type="Area2D"]
+process_mode = 3
+collision_mask = 2
+script = ExtResource("1_x4mgg")
+skill = "wall_jump"
+message = "WALL JUMP: presiona salto aen contacto con un muro."
+
+[node name="diamond_player" type="AnimationPlayer" parent="."]
+root_node = NodePath("../spr_diamond")
+autoplay = "Idle"
+libraries = {
+"": SubResource("AnimationLibrary_j0qff")
+}
+
+[node name="spr_diamond" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_h71sg")
+
+[node name="col_skill" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rdlrs")
+
+[node name="pause_timer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="pause_timer" to="." method="_on_pause_timer_timeout"]

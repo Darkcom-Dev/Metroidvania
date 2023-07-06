@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=3 uid="uid://bvp5nggx3l4m2"]
+
+[ext_resource type="Script" path="res://Level/room_map_updater.gd" id="1_d5xpp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rwb5p"]
+size = Vector2(768, 432)
+
+[sub_resource type="SystemFont" id="SystemFont_dl6ho"]
+font_names = PackedStringArray("G15")
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_btxor"]
+font = SubResource("SystemFont_dl6ho")
+shadow_color = Color(0, 0, 0, 1)
+
+[node name="Room_Template" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_d5xpp")
+
+[node name="col_room" type="CollisionShape2D" parent="."]
+position = Vector2(384, 216)
+shape = SubResource("RectangleShape2D_rwb5p")
+
+[node name="Room_Template" type="Node2D" parent="."]
+
+[node name="Fondo" type="ColorRect" parent="Room_Template"]
+visible = false
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = -168.0
+offset_right = 768.0
+offset_bottom = 600.0
+grow_horizontal = 2
+color = Color(0, 0.0823529, 0.113725, 1)
+
+[node name="Frontal" type="ColorRect" parent="Room_Template"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = 768.0
+offset_bottom = 432.0
+grow_horizontal = 2
+color = Color(0, 0.168627, 0.223529, 1)
+
+[node name="Medidas" type="Label" parent="Room_Template"]
+texture_filter = 1
+offset_left = 64.0
+offset_top = 32.0
+offset_right = 364.0
+offset_bottom = 55.0
+text = "768x432 /8 = 96x54 @ 16:9"
+label_settings = SubResource("LabelSettings_btxor")
+
+[node name="MedidasHD" type="Label" parent="Room_Template"]
+texture_filter = 1
+offset_left = 432.0
+offset_top = 384.0
+offset_right = 756.0
+offset_bottom = 407.0
+text = "1280x760 /8 = 160x90 @ 16:9"
+label_settings = SubResource("LabelSettings_btxor")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

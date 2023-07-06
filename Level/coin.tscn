@@ -1,0 +1,96 @@
+[gd_scene load_steps=15 format=3 uid="uid://yve4ygv1du77"]
+
+[ext_resource type="Script" path="res://Level/coin.gd" id="1_1tc3p"]
+[ext_resource type="Texture2D" uid="uid://bvv6rmf7nytmm" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Gold Coin/01.png" id="1_hes2s"]
+[ext_resource type="Texture2D" uid="uid://bitrqa6dy5k78" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Gold Coin/02.png" id="2_7ib5v"]
+[ext_resource type="Texture2D" uid="uid://b4m275ax0rpiy" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Gold Coin/03.png" id="3_5o3ef"]
+[ext_resource type="Texture2D" uid="uid://cxauut7wf3cm" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Gold Coin/04.png" id="4_rmymo"]
+[ext_resource type="Texture2D" uid="uid://d2bp4c3njxs63" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Coin Effect/01.png" id="5_cixqm"]
+[ext_resource type="Texture2D" uid="uid://dlxc76t74oaki" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Coin Effect/02.png" id="6_j1uny"]
+[ext_resource type="Texture2D" uid="uid://cpac3lpo2rf6x" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Coin Effect/03.png" id="7_xlje5"]
+[ext_resource type="AudioStream" uid="uid://l8lwjo7yf6xv" path="res://Assets/coin_trim.ogg" id="8_v66hf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_inb1m"]
+radius = 12.0
+
+[sub_resource type="Animation" id="Animation_6suf5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_hes2s")]
+}
+
+[sub_resource type="Animation" id="Animation_4husf"]
+resource_name = "effect"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("5_cixqm"), ExtResource("6_j1uny"), ExtResource("7_xlje5")]
+}
+
+[sub_resource type="Animation" id="Animation_1rwbn"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("1_hes2s"), ExtResource("2_7ib5v"), ExtResource("3_5o3ef"), ExtResource("4_rmymo")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4ejfj"]
+_data = {
+"RESET": SubResource("Animation_6suf5"),
+"effect": SubResource("Animation_4husf"),
+"idle": SubResource("Animation_1rwbn")
+}
+
+[node name="Coin" type="Area2D"]
+collision_mask = 2
+gravity_point = true
+gravity_point_unit_distance = 5.0
+script = ExtResource("1_1tc3p")
+
+[node name="col_coin" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_inb1m")
+
+[node name="anim_coin" type="AnimationPlayer" parent="."]
+root_node = NodePath("../spr_coin")
+autoplay = "idle"
+libraries = {
+"": SubResource("AnimationLibrary_4ejfj")
+}
+
+[node name="spr_coin" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_hes2s")
+
+[node name="coin_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_v66hf")
+bus = &"SFX"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="finished" from="coin_sfx" to="." method="_on_coin_sfx_finished"]

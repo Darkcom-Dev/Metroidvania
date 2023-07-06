@@ -1,0 +1,72 @@
+[gd_scene load_steps=6 format=3 uid="uid://bhyhkrmr77cos"]
+
+[ext_resource type="Script" path="res://Interfaces/controls.gd" id="1_h4e3s"]
+[ext_resource type="Texture2D" uid="uid://dwksddhfgcgcm" path="res://Assets/Treasure Hunters/Treasure Hunters/Wood and Paper UI/Sprites/Yellow Paper/5.png" id="1_xw6x5"]
+[ext_resource type="LabelSettings" uid="uid://cysg3dgy7bb23" path="res://Assets/pause_label_settings.tres" id="2_r87cg"]
+[ext_resource type="FontFile" uid="uid://bjwhnk1s4hvc6" path="res://Assets/at01explus.ttf" id="3_0ldib"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_c3p6b"]
+font = ExtResource("3_0ldib")
+font_color = Color(0.12549, 0.827451, 1, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Controls" type="Popup"]
+title = "Instructions"
+size = Vector2i(266, 256)
+script = ExtResource("1_h4e3s")
+
+[node name="Background" type="TextureRect" parent="."]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 10.0
+offset_bottom = -46.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_xw6x5")
+expand_mode = 2
+stretch_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Background"]
+texture_filter = 1
+layout_mode = 1
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 238.0
+offset_bottom = 95.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Controls" type="Label" parent="Background/MarginContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+text = "Controls"
+label_settings = ExtResource("2_r87cg")
+
+[node name="Instructions" type="Label" parent="Background/MarginContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+text = "Movement: Move with arrows keys or WASD keys.
+Jump: Space key or X button PS1 Joystick.
+Slash: V key or Circle button PS1 Joystick
+Dash: C key or Triangle button PS! Joystick
+
+Pause Menu: Enter key or Start Button
+Map: M key or Select Button"
+label_settings = SubResource("LabelSettings_c3p6b")
+
+[node name="Button" type="Button" parent="Background/MarginContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_0ldib")
+text = "Close"
+
+[connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
+[connection signal="pressed" from="Background/MarginContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwjko2ei0t7kl"]
+
+[ext_resource type="Texture2D" uid="uid://coxycry4no3g0" path="res://Assets/plataforma_movil.png" id="1_ys0xr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7dlnw"]
+size = Vector2(32, 8)
+
+[node name="Mobile_platform" type="CharacterBody2D"]
+texture_filter = 1
+
+[node name="col_platform" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_7dlnw")
+
+[node name="spr_platform" type="Sprite2D" parent="."]
+position = Vector2(0, 16)
+texture = ExtResource("1_ys0xr")

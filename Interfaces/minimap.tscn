@@ -1,0 +1,238 @@
+[gd_scene load_steps=18 format=3 uid="uid://dlpvmlbla4bfi"]
+
+[ext_resource type="Script" path="res://Interfaces/minimap.gd" id="1_juy28"]
+[ext_resource type="Texture2D" uid="uid://dwksddhfgcgcm" path="res://Assets/Treasure Hunters/Treasure Hunters/Wood and Paper UI/Sprites/Yellow Paper/5.png" id="1_pq625"]
+[ext_resource type="Script" path="res://Interfaces/mask.gd" id="2_1wb65"]
+[ext_resource type="Texture2D" uid="uid://d3cmwx7iim0ha" path="res://Assets/openart/mini_map/3.png" id="4_mw6gr"]
+[ext_resource type="Texture2D" uid="uid://cuh3xgqnkmcit" path="res://Assets/openart/mini_map/5.png" id="5_7oxkp"]
+[ext_resource type="Texture2D" uid="uid://dhokhrq7fv6cu" path="res://Assets/openart/mini_map/22C.png" id="6_ephf7"]
+[ext_resource type="Texture2D" uid="uid://ckf2o8sb2ee0k" path="res://Assets/openart/mini_map/22B.png" id="7_12kcj"]
+[ext_resource type="Texture2D" uid="uid://b06iofryqyw2o" path="res://Assets/openart/mini_map/20.png" id="8_fv2u7"]
+[ext_resource type="Texture2D" uid="uid://bk3s3y5ut5h2y" path="res://Assets/openart/mini_map/56.png" id="9_lcs78"]
+[ext_resource type="Texture2D" uid="uid://d0trfisxu88aa" path="res://Assets/openart/mini_map/55.png" id="10_2bb24"]
+[ext_resource type="Texture2D" uid="uid://bcg04yhswqd5m" path="res://Assets/openart/mini_map/45.png" id="11_8ewg1"]
+[ext_resource type="Texture2D" uid="uid://b6372gqsisc5k" path="res://Assets/openart/mini_map/36.png" id="12_7dy1y"]
+[ext_resource type="FontFile" uid="uid://duk3lygtddcxa" path="res://Assets/h_NokiaCellphoneFC.ttf" id="13_bsswb"]
+[ext_resource type="Texture2D" uid="uid://cl5bklp1bvs8i" path="res://Assets/openart/mini_map/8.png" id="13_nxbkr"]
+[ext_resource type="Texture2D" uid="uid://qrecc1pwqyyx" path="res://Assets/openart/mini_map/2.png" id="14_mr4j4"]
+[ext_resource type="Texture2D" uid="uid://c5f1xyeom6g4y" path="res://Assets/openart/mini_map/1.png" id="14_tj81d"]
+[ext_resource type="Texture2D" uid="uid://cyrss66ndlwks" path="res://Assets/openart/mini_map/16.png" id="15_07nbn"]
+
+[node name="Minimap_Popup" type="Popup"]
+initial_position = 2
+size = Vector2i(330, 256)
+visible = true
+content_scale_aspect = 1
+script = ExtResource("1_juy28")
+
+[node name="mask" type="TextureRect" parent="."]
+clip_children = 2
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_pq625")
+stretch_mode = 1
+script = ExtResource("2_1wb65")
+reveal = [NodePath("level_movement"), NodePath("level_jumps"), NodePath("level_jumps_complex_A"), NodePath("level_jumps_complex_B"), NodePath("level_jumps_and_boxes_A"), NodePath("level_jumps_and_boxes_B"), NodePath("level_sword_range_A"), NodePath("level_sword_range_B"), NodePath("level_sword_range_C"), NodePath("level_sword_range_D"), NodePath("level_4"), NodePath("level_4_2"), NodePath("level_2"), NodePath("level_2"), NodePath("level_1B"), NodePath("level_1A")]
+
+[node name="level_movement" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 16.0
+offset_bottom = 16.0
+texture = ExtResource("4_mw6gr")
+
+[node name="level_jumps" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 16.0
+offset_top = 8.0
+offset_right = 24.0
+offset_bottom = 16.0
+texture = ExtResource("5_7oxkp")
+
+[node name="level_jumps_complex_A" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 24.0
+offset_top = 8.0
+offset_right = 32.0
+offset_bottom = 16.0
+texture = ExtResource("6_ephf7")
+
+[node name="level_jumps_complex_B" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 24.0
+offset_top = 16.0
+offset_right = 32.0
+offset_bottom = 24.0
+texture = ExtResource("7_12kcj")
+flip_v = true
+
+[node name="level_jumps_and_boxes_A" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 32.0
+offset_top = 8.0
+offset_right = 40.0
+offset_bottom = 16.0
+texture = ExtResource("6_ephf7")
+
+[node name="level_jumps_and_boxes_B" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 32.0
+offset_top = 16.0
+offset_right = 40.0
+offset_bottom = 24.0
+texture = ExtResource("8_fv2u7")
+
+[node name="level_sword_range_A" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 8.0
+offset_top = 16.0
+offset_right = 16.0
+offset_bottom = 24.0
+texture = ExtResource("11_8ewg1")
+
+[node name="level_sword_range_B" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 24.0
+offset_bottom = 24.0
+texture = ExtResource("12_7dy1y")
+flip_v = true
+
+[node name="level_sword_range_C" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 8.0
+offset_top = 24.0
+offset_right = 16.0
+offset_bottom = 32.0
+texture = ExtResource("10_2bb24")
+
+[node name="level_sword_range_D" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 16.0
+offset_top = 24.0
+offset_right = 24.0
+offset_bottom = 32.0
+texture = ExtResource("9_lcs78")
+
+[node name="level_4" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 72.0
+offset_bottom = 72.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("13_nxbkr")
+stretch_mode = 1
+flip_v = true
+
+[node name="level_4_2" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+offset_left = 56.0
+offset_top = 56.0
+offset_right = 64.0
+offset_bottom = 64.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("14_mr4j4")
+stretch_mode = 1
+
+[node name="level_2" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+offset_left = 56.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 72.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("15_07nbn")
+stretch_mode = 1
+
+[node name="level_1B" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+offset_left = 48.0
+offset_top = 64.0
+offset_right = 56.0
+offset_bottom = 72.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_7oxkp")
+stretch_mode = 1
+
+[node name="level_1A" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+offset_left = 40.0
+offset_top = 64.0
+offset_right = 48.0
+offset_bottom = 72.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_7oxkp")
+stretch_mode = 1
+
+[node name="level_3" type="TextureRect" parent="mask"]
+visible = false
+texture_filter = 1
+layout_mode = 1
+offset_left = 32.0
+offset_top = 64.0
+offset_right = 40.0
+offset_bottom = 72.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("14_tj81d")
+stretch_mode = 1
+flip_h = true
+
+[node name="close" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("13_bsswb")
+text = "Close"
+
+[connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
+[connection signal="visibility_changed" from="mask" to="mask" method="_on_visibility_changed"]
+[connection signal="pressed" from="close" to="." method="_on_close_pressed"]

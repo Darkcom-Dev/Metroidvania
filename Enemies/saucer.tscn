@@ -1,0 +1,241 @@
+[gd_scene load_steps=27 format=3 uid="uid://ciq0oxyiuldko"]
+
+[ext_resource type="Script" path="res://Enemies/Saucer.gd" id="1_pvwnt"]
+[ext_resource type="PackedScene" uid="uid://cvjog1r4nrq1q" path="res://Level/potion_drop.tscn" id="2_lahje"]
+[ext_resource type="Texture2D" uid="uid://dd3lvg4q25ayn" path="res://Assets/Sprite Pack 5/1 - Robo Retro/Flying_(32 x 32).png" id="2_vcb28"]
+[ext_resource type="PackedScene" uid="uid://fnnv1gj2x6bs" path="res://Level/coin_dropeable.tscn" id="3_5rieg"]
+[ext_resource type="AudioStream" uid="uid://0hvp366umwgs" path="res://Assets/Big_explosion_trim.ogg" id="3_wtatg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gtun8"]
+
+[sub_resource type="Animation" id="Animation_a5ntn"]
+resource_name = "Dead"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.92549, 0, 0.188235, 1), Color(0.92549, 0, 0.188235, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_y8u6o"]
+resource_name = "Fliying"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_f4tme"]
+resource_name = "Hurt"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.92549, 0, 0.188235, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ovyu5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hj3hf"]
+_data = {
+"Dead": SubResource("Animation_a5ntn"),
+"Fliying": SubResource("Animation_y8u6o"),
+"Hurt": SubResource("Animation_f4tme"),
+"RESET": SubResource("Animation_ovyu5")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hv6eb"]
+radius = 16.0
+
+[sub_resource type="Gradient" id="Gradient_3dogg"]
+colors = PackedColorArray(1, 1, 1, 1, 0.64599, 0.336978, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_t3n1e"]
+gradient = SubResource("Gradient_3dogg")
+
+[sub_resource type="Curve" id="Curve_pa44j"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0198675), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_4elnb"]
+curve = SubResource("Curve_pa44j")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_h7tpc"]
+lifetime_randomness = 0.5
+emission_shape = 1
+emission_sphere_radius = 12.0
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_max = 50.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_max = 12.0
+scale_curve = SubResource("CurveTexture_4elnb")
+color_ramp = SubResource("GradientTexture1D_t3n1e")
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dohii"]
+animation = &"Dead"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i2l0p"]
+animation = &"Fliying"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l8k5b"]
+animation = &"Hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5djlh"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m4wxg"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8ford"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4i6fn"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_22maa"]
+states/Dead/node = SubResource("AnimationNodeAnimation_dohii")
+states/Dead/position = Vector2(638.667, 178)
+states/Fliying/node = SubResource("AnimationNodeAnimation_i2l0p")
+states/Fliying/position = Vector2(529.333, 106)
+states/Hurt/node = SubResource("AnimationNodeAnimation_l8k5b")
+states/Hurt/position = Vector2(412, 178)
+transitions = ["Start", "Fliying", SubResource("AnimationNodeStateMachineTransition_5djlh"), "Fliying", "Hurt", SubResource("AnimationNodeStateMachineTransition_m4wxg"), "Hurt", "Fliying", SubResource("AnimationNodeStateMachineTransition_8ford"), "Fliying", "Dead", SubResource("AnimationNodeStateMachineTransition_4i6fn")]
+graph_offset = Vector2(20, 48)
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_1adjt"]
+
+[node name="Saucer" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 4
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_pvwnt")
+amplitude = 50
+speed = 100.0
+health = 1
+drop_1 = ExtResource("2_lahje")
+rarity1 = 30
+drop_2 = ExtResource("3_5rieg")
+rarity2 = 10
+
+[node name="col_saucer" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_gtun8")
+
+[node name="saucer_player" type="AnimationPlayer" parent="."]
+root_node = NodePath("../spr_saucer")
+autoplay = "Fliying"
+libraries = {
+"": SubResource("AnimationLibrary_hj3hf")
+}
+
+[node name="spr_saucer" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_vcb28")
+hframes = 2
+
+[node name="damage_area" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="damage_shape" type="CollisionShape2D" parent="damage_area"]
+shape = SubResource("CircleShape2D_hv6eb")
+debug_color = Color(0.988235, 0, 0.294118, 0.419608)
+
+[node name="hurt_time" type="Timer" parent="."]
+one_shot = true
+
+[node name="explosion" type="GPUParticles2D" parent="."]
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_h7tpc")
+one_shot = true
+
+[node name="big_explosion" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_wtatg")
+bus = &"SFX"
+
+[node name="anim_tree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_22maa")
+anim_player = NodePath("../saucer_player")
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_1adjt")
+
+[node name="autodestroy" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[connection signal="body_entered" from="damage_area" to="." method="_on_damage_area_body_entered"]
+[connection signal="timeout" from="hurt_time" to="." method="_on_hurt_time_timeout"]
+[connection signal="animation_finished" from="anim_tree" to="." method="_on_anim_tree_animation_finished"]
+[connection signal="timeout" from="autodestroy" to="." method="_on_autodestroy_timeout"]

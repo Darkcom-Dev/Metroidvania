@@ -1,0 +1,218 @@
+[gd_scene load_steps=13 format=3 uid="uid://dj6y1gjdslg7b"]
+
+[ext_resource type="Script" path="res://Enemies/ghost_fire.gd" id="1_5kp8s"]
+[ext_resource type="Texture2D" uid="uid://s350qmq4jd56" path="res://Assets/Sprite Pack 5/9 - Wispy Fire/Death_(32 x 32).png" id="1_utvsy"]
+[ext_resource type="Texture2D" uid="uid://c2db3i5d1bisq" path="res://Assets/Sprite Pack 5/9 - Wispy Fire/Idle_Flicker_(32 x 32).png" id="2_dhowa"]
+[ext_resource type="PackedScene" uid="uid://fnnv1gj2x6bs" path="res://Level/coin_dropeable.tscn" id="2_jiigw"]
+[ext_resource type="PackedScene" uid="uid://cvjog1r4nrq1q" path="res://Level/potion_drop.tscn" id="3_nawn7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_16gyi"]
+
+[sub_resource type="Animation" id="Animation_nyeri"]
+resource_name = "Dead"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_ghost:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("spr_ghost:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("spr_ghost:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_utvsy")]
+}
+
+[sub_resource type="Animation" id="Animation_e15rr"]
+resource_name = "Hit"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_ghost:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [16, 17, 18, 19]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("spr_ghost:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [21]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("spr_ghost:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_dhowa")]
+}
+
+[sub_resource type="Animation" id="Animation_tq1gi"]
+resource_name = "Idle"
+length = 1.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_ghost:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("spr_ghost:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [21]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("spr_ghost:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_dhowa")]
+}
+
+[sub_resource type="Animation" id="Animation_vww3r"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_ghost:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("spr_ghost:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [21]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("spr_ghost:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_utvsy")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yaj5k"]
+_data = {
+"Dead": SubResource("Animation_nyeri"),
+"Hit": SubResource("Animation_e15rr"),
+"Idle": SubResource("Animation_tq1gi"),
+"RESET": SubResource("Animation_vww3r")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tbphv"]
+radius = 16.0
+
+[node name="Ghost_fire" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 4
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_5kp8s")
+speed = 1.0
+hit_speed = -10.0
+health = 2
+drop_1 = ExtResource("2_jiigw")
+rarity1 = 30
+drop_2 = ExtResource("3_nawn7")
+rarity2 = 10
+
+[node name="col_ghost" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_16gyi")
+
+[node name="spr_ghost" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -8)
+texture = ExtResource("1_utvsy")
+hframes = 21
+
+[node name="anim_ghost" type="AnimationPlayer" parent="."]
+autoplay = "Idle"
+libraries = {
+"": SubResource("AnimationLibrary_yaj5k")
+}
+
+[node name="hit_area" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="col_hit" type="CollisionShape2D" parent="hit_area"]
+shape = SubResource("CircleShape2D_tbphv")
+debug_color = Color(0.988235, 0, 0.313726, 0.419608)
+
+[connection signal="animation_finished" from="anim_ghost" to="." method="_on_anim_ghost_animation_finished"]
+[connection signal="body_entered" from="hit_area" to="." method="_on_hit_area_body_entered"]

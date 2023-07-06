@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkh483myai1ol"]
+
+[ext_resource type="AudioStream" uid="uid://dcpjb5gg8br66" path="res://Assets/sfx_wind.ogg" id="1_86gtq"]
+
+[node name="bgm" type="AudioStreamPlayer"]
+process_mode = 3
+stream = ExtResource("1_86gtq")
+autoplay = true
+bus = &"BGM"

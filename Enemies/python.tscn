@@ -1,0 +1,214 @@
+[gd_scene load_steps=22 format=3 uid="uid://conbhr6i4y36d"]
+
+[ext_resource type="Script" path="res://Enemies/python.gd" id="1_pgid2"]
+[ext_resource type="Texture2D" uid="uid://c4x1kq377rmas" path="res://Assets/openart/Python.png" id="2_0omws"]
+[ext_resource type="PackedScene" uid="uid://fnnv1gj2x6bs" path="res://Level/coin_dropeable.tscn" id="2_pmrfo"]
+[ext_resource type="PackedScene" uid="uid://cvjog1r4nrq1q" path="res://Level/potion_drop.tscn" id="3_7f2mc"]
+[ext_resource type="AudioStream" uid="uid://dlocejqrnie4e" path="res://Assets/snake_trim_norm.ogg" id="3_kwe3x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vo2a3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_psopl"]
+
+[sub_resource type="Animation" id="Animation_87jh2"]
+resource_name = "Dead"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_python:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("spr_python:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0, 0.0784314, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_dyfst"]
+resource_name = "Hurt"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_python:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("spr_python:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0, 0.0784314, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_e0cej"]
+length = 0.001
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_python:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("spr_python:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_jd026"]
+resource_name = "Walk"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_python:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_e61al"]
+_data = {
+"Dead": SubResource("Animation_87jh2"),
+"Hurt": SubResource("Animation_dyfst"),
+"RESET": SubResource("Animation_e0cej"),
+"Walk": SubResource("Animation_jd026")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hnjfx"]
+animation = &"Dead"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ihtdl"]
+animation = &"Hurt"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w1ghs"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dpwkk"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_56oh1"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sp82j"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h1tlw"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ylns8"]
+states/Dead/node = SubResource("AnimationNodeAnimation_hnjfx")
+states/Dead/position = Vector2(667.333, 178)
+states/Hurt/node = SubResource("AnimationNodeAnimation_ihtdl")
+states/Hurt/position = Vector2(476.667, 248.667)
+states/Start/position = Vector2(234.667, 86.6667)
+states/Walk/node = SubResource("AnimationNodeAnimation_w1ghs")
+states/Walk/position = Vector2(480, 87.3333)
+transitions = ["Start", "Walk", SubResource("AnimationNodeStateMachineTransition_dpwkk"), "Walk", "Hurt", SubResource("AnimationNodeStateMachineTransition_56oh1"), "Hurt", "Walk", SubResource("AnimationNodeStateMachineTransition_sp82j"), "Walk", "Dead", SubResource("AnimationNodeStateMachineTransition_h1tlw")]
+graph_offset = Vector2(-4, 75)
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_kxprc"]
+
+[node name="Python" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 4
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_pgid2")
+speed = 10.0
+hit_speed = 20.0
+health = 4
+STR = 8
+DEF = 2
+drop_1 = ExtResource("2_pmrfo")
+rarity1 = 30
+drop_2 = ExtResource("3_7f2mc")
+rarity2 = 10
+
+[node name="hitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="col_hitbox" type="CollisionShape2D" parent="hitbox"]
+shape = SubResource("RectangleShape2D_vo2a3")
+
+[node name="col_python" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_psopl")
+
+[node name="spr_python" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_0omws")
+hframes = 4
+
+[node name="anim_python" type="AnimationPlayer" parent="."]
+autoplay = "Walk"
+speed_scale = 0.5
+libraries = {
+"": SubResource("AnimationLibrary_e61al")
+}
+
+[node name="damage_timer" type="Timer" parent="."]
+
+[node name="movement_timer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_kwe3x")
+bus = &"SFX"
+
+[node name="anim_tree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_ylns8")
+anim_player = NodePath("../anim_python")
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_kxprc")
+
+[node name="vertical" type="RayCast2D" parent="."]
+target_position = Vector2(0, 12)
+
+[node name="horizontal" type="RayCast2D" parent="."]
+target_position = Vector2(16, 0)
+
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="timeout" from="damage_timer" to="." method="_on_damage_timer_timeout"]
+[connection signal="timeout" from="movement_timer" to="." method="_on_movement_timer_timeout"]
+[connection signal="animation_finished" from="anim_tree" to="." method="_on_anim_tree_animation_finished"]

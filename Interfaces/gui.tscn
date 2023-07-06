@@ -1,0 +1,352 @@
+[gd_scene load_steps=18 format=3 uid="uid://dstvm7jitki0o"]
+
+[ext_resource type="Texture2D" uid="uid://bvv6rmf7nytmm" path="res://Assets/Treasure Hunters/Treasure Hunters/Pirate Treasure/Sprites/Gold Coin/01.png" id="1_hktgi"]
+[ext_resource type="Script" path="res://Interfaces/gui.gd" id="1_losf2"]
+[ext_resource type="Texture2D" uid="uid://dhstuvkjpndrp" path="res://Assets/health_bar.png" id="2_cochn"]
+[ext_resource type="FontFile" uid="uid://duk3lygtddcxa" path="res://Assets/h_NokiaCellphoneFC.ttf" id="2_hbvqq"]
+[ext_resource type="Texture2D" uid="uid://bdyaklbk7lbli" path="res://Assets/health_bar_bar.png" id="3_ssjbk"]
+[ext_resource type="LabelSettings" uid="uid://cysg3dgy7bb23" path="res://Assets/pause_label_settings.tres" id="6_up4a2"]
+[ext_resource type="PackedScene" uid="uid://bvp5nggx3l4m2" path="res://Level/room_template.tscn" id="7_q8i4v"]
+[ext_resource type="PackedScene" uid="uid://mvx8icctge75" path="res://Interfaces/options_popup.tscn" id="8_o3k2s"]
+[ext_resource type="PackedScene" uid="uid://dlpvmlbla4bfi" path="res://Interfaces/minimap.tscn" id="9_v5epj"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8gth7"]
+font = ExtResource("2_hbvqq")
+font_size = 8
+outline_size = 3
+outline_color = Color(0.129412, 0.129412, 0.129412, 1)
+
+[sub_resource type="Gradient" id="Gradient_jv0bd"]
+offsets = PackedFloat32Array(0, 0.531579, 1)
+colors = PackedColorArray(0, 0, 0, 0, 2.59906e-06, 0.463478, 0.559838, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_barmf"]
+gradient = SubResource("Gradient_jv0bd")
+fill_to = Vector2(0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1x7a4"]
+font = ExtResource("2_hbvqq")
+font_size = 12
+
+[sub_resource type="LabelSettings" id="LabelSettings_s1s7k"]
+font = ExtResource("2_hbvqq")
+font_size = 40
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 5
+shadow_color = Color(0.827451, 0, 0.701961, 0.54902)
+shadow_offset = Vector2(5, 5)
+
+[sub_resource type="Animation" id="Animation_1dyug"]
+resource_name = "FadeIn"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_8dr10"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4ad0d"]
+_data = {
+"FadeIn": SubResource("Animation_1dyug"),
+"RESET": SubResource("Animation_8dr10")
+}
+
+[node name="GUI" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_losf2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Container" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Health_bar" type="HBoxContainer" parent="MarginContainer/Container"]
+layout_mode = 2
+
+[node name="health_bar_progress" type="TextureProgressBar" parent="MarginContainer/Container/Health_bar"]
+texture_filter = 1
+layout_mode = 2
+value = 50.0
+stretch_margin_left = 16
+stretch_margin_right = 4
+texture_under = ExtResource("2_cochn")
+texture_progress = ExtResource("3_ssjbk")
+
+[node name="MP_bar_progress" type="TextureProgressBar" parent="MarginContainer/Container/Health_bar"]
+texture_filter = 1
+layout_mode = 2
+value = 50.0
+stretch_margin_left = 16
+stretch_margin_right = 4
+texture_under = ExtResource("2_cochn")
+texture_progress = ExtResource("3_ssjbk")
+tint_progress = Color(0.2, 0.305882, 1, 1)
+
+[node name="Coins" type="HBoxContainer" parent="MarginContainer/Container"]
+layout_mode = 2
+
+[node name="coin_icon" type="TextureRect" parent="MarginContainer/Container/Coins"]
+texture_filter = 1
+layout_mode = 2
+texture = ExtResource("1_hktgi")
+expand_mode = 2
+
+[node name="coin_counter" type="Label" parent="MarginContainer/Container/Coins"]
+texture_filter = 1
+layout_mode = 2
+text = "x 0"
+label_settings = SubResource("LabelSettings_8gth7")
+vertical_alignment = 1
+
+[node name="pos" type="Label" parent="MarginContainer/Container"]
+texture_filter = 1
+layout_mode = 2
+text = "pos"
+label_settings = SubResource("LabelSettings_8gth7")
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="Message" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="TextureRect" parent="Message"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_barmf")
+
+[node name="skill_message" type="Label" parent="Message/ColorRect"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "SKILL Message"
+label_settings = SubResource("LabelSettings_1x7a4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Game_Over" type="Label" parent="Control"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -137.5
+offset_top = -26.5
+offset_right = 137.5
+offset_bottom = 26.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "GAME OVER"
+label_settings = SubResource("LabelSettings_s1s7k")
+
+[node name="GameOver_fadein" type="AnimationPlayer" parent="."]
+movie_quit_on_finish = true
+libraries = {
+"": SubResource("AnimationLibrary_4ad0d")
+}
+
+[node name="message_timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="Pause" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = 64.0
+offset_right = -64.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BGPause" type="ColorRect" parent="Pause"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.156863, 0.184314, 1)
+
+[node name="Margin_pause" type="MarginContainer" parent="Pause"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 27.0
+offset_top = 16.0
+offset_right = 10.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="Pause/Margin_pause"]
+layout_mode = 2
+alignment = 1
+
+[node name="Stats" type="VBoxContainer" parent="Pause/Margin_pause/VBoxContainer"]
+layout_mode = 2
+
+[node name="HP_maxHP" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats"]
+layout_mode = 2
+text = "HP / max HP"
+label_settings = ExtResource("6_up4a2")
+
+[node name="MP_maxMP" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats"]
+layout_mode = 2
+text = "MP / Max MP"
+label_settings = ExtResource("6_up4a2")
+
+[node name="LV" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats"]
+layout_mode = 2
+text = "Level : stats.LV"
+label_settings = ExtResource("6_up4a2")
+
+[node name="XP" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats"]
+layout_mode = 2
+text = "XP : Stats.XP"
+label_settings = ExtResource("6_up4a2")
+
+[node name="Next_LV" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats"]
+layout_mode = 2
+text = "Next LV : Stats.max_XP"
+label_settings = ExtResource("6_up4a2")
+
+[node name="Coins" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats"]
+layout_mode = 2
+text = "Coins: stats.coins"
+label_settings = ExtResource("6_up4a2")
+
+[node name="Stats2" type="VBoxContainer" parent="Pause/Margin_pause/VBoxContainer"]
+layout_mode = 2
+
+[node name="STR" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats2"]
+layout_mode = 2
+text = "STR : stats.STR"
+label_settings = ExtResource("6_up4a2")
+
+[node name="DEF" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats2"]
+layout_mode = 2
+text = "DEF : stats.DEF"
+label_settings = ExtResource("6_up4a2")
+
+[node name="INT" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats2"]
+layout_mode = 2
+text = "INT : stats.INT"
+label_settings = ExtResource("6_up4a2")
+
+[node name="LCK" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats2"]
+layout_mode = 2
+text = "LCK : stats.LCK"
+label_settings = ExtResource("6_up4a2")
+
+[node name="Menu" type="VBoxContainer" parent="Pause/Margin_pause/VBoxContainer"]
+layout_mode = 2
+
+[node name="Resume" type="Button" parent="Pause/Margin_pause/VBoxContainer/Menu"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_hbvqq")
+text = "Resume"
+
+[node name="Options" type="Button" parent="Pause/Margin_pause/VBoxContainer/Menu"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_hbvqq")
+text = "Options"
+
+[node name="Main_Menu" type="Button" parent="Pause/Margin_pause/VBoxContainer/Menu"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_hbvqq")
+text = "Main Menu"
+
+[node name="Room_Template" parent="." instance=ExtResource("7_q8i4v")]
+visible = false
+position = Vector2(192, 108)
+scale = Vector2(0.5, 0.5)
+
+[node name="Options_popup" parent="." instance=ExtResource("8_o3k2s")]
+visible = false
+
+[node name="Minimap_Popup" parent="." instance=ExtResource("9_v5epj")]
+initial_position = 0
+position = Vector2i(10, 10)
+size = Vector2i(330, 208)
+visible = false
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="animation_finished" from="GameOver_fadein" to="." method="_on_game_over_fadein_animation_finished"]
+[connection signal="timeout" from="message_timer" to="." method="_on_message_timer_timeout"]
+[connection signal="pressed" from="Pause/Margin_pause/VBoxContainer/Menu/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Pause/Margin_pause/VBoxContainer/Menu/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Pause/Margin_pause/VBoxContainer/Menu/Main_Menu" to="." method="_on_main_menu_pressed"]

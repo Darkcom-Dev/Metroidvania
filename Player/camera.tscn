@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dga1ft5ykep3w"]
+
+[ext_resource type="Script" path="res://Camera.gd" id="1_nsaiu"]
+
+[node name="Camera" type="Camera2D"]
+position = Vector2(385, 216)
+limit_left = 0
+limit_top = 0
+limit_right = 768
+limit_bottom = 432
+limit_smoothed = true
+position_smoothing_enabled = true
+script = ExtResource("1_nsaiu")

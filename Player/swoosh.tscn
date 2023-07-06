@@ -1,0 +1,76 @@
+[gd_scene load_steps=8 format=3 uid="uid://brt6spaxwfh7t"]
+
+[ext_resource type="Texture2D" uid="uid://bkd67jyn8bb3s" path="res://Assets/openart/swoosh.png" id="1_ps78v"]
+[ext_resource type="Script" path="res://Enemies/tooth_attack.gd" id="1_v4eof"]
+[ext_resource type="AudioStream" uid="uid://mpp8qnt8aqcx" path="res://Assets/hit_sword_trim.ogg" id="3_o5sfb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_k26ey"]
+radius = 14.0
+
+[sub_resource type="Animation" id="Animation_shoe8"]
+resource_name = "Attack_effect"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Swoosh:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_2fqul"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Swoosh:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o1ex4"]
+_data = {
+"Attack_effect": SubResource("Animation_shoe8"),
+"RESET": SubResource("Animation_2fqul")
+}
+
+[node name="Swoosh" type="Area2D"]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_v4eof")
+STR = 10
+attack_anim_name = "Attack_effect"
+target_group = "enemy"
+
+[node name="col_swoosh" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_k26ey")
+debug_color = Color(0.996078, 0.0509804, 0, 0.419608)
+
+[node name="Swoosh" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_ps78v")
+hframes = 4
+
+[node name="anim_tooth" type="AnimationPlayer" parent="."]
+autoplay = "Attack_effect"
+libraries = {
+"": SubResource("AnimationLibrary_o1ex4")
+}
+
+[node name="tooth_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_o5sfb")
+autoplay = true
+bus = &"SFX"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="animation_finished" from="anim_tooth" to="." method="_on_anim_tooth_animation_finished"]

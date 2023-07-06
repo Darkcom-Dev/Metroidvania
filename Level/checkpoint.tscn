@@ -1,0 +1,98 @@
+[gd_scene load_steps=18 format=3 uid="uid://b4he2uxtw7stb"]
+
+[ext_resource type="Texture2D" uid="uid://ddusr0ij465by" path="res://Assets/Treasure Hunters/Treasure Hunters/Palm Tree Island/Sprites/Objects/Ship Helm/Ship Helm Idle 01.png" id="1_tqv4f"]
+[ext_resource type="Script" path="res://Level/checkpoint.gd" id="1_ynkb4"]
+[ext_resource type="Texture2D" uid="uid://dnke2bs23rjlf" path="res://Assets/Treasure Hunters/Treasure Hunters/Palm Tree Island/Sprites/Objects/Ship Helm/Ship Helm Idle 02.png" id="2_26n3k"]
+[ext_resource type="Texture2D" uid="uid://dvyfvqc11jih7" path="res://Assets/Treasure Hunters/Treasure Hunters/Palm Tree Island/Sprites/Objects/Ship Helm/Ship Helm Idle 03.png" id="3_y4sbr"]
+[ext_resource type="Texture2D" uid="uid://c6sv1wqw3gcxb" path="res://Assets/Treasure Hunters/Treasure Hunters/Palm Tree Island/Sprites/Objects/Ship Helm/Ship Helm Idle 04.png" id="4_1jel1"]
+[ext_resource type="Texture2D" uid="uid://b0pncvapjdoae" path="res://Assets/Treasure Hunters/Treasure Hunters/Palm Tree Island/Sprites/Objects/Ship Helm/Ship Helm Idle 05.png" id="5_8ac1c"]
+[ext_resource type="Texture2D" uid="uid://ccr1ahl8pkh7s" path="res://Assets/Treasure Hunters/Treasure Hunters/Palm Tree Island/Sprites/Objects/Ship Helm/Ship Helm Idle 06.png" id="6_aircy"]
+[ext_resource type="Texture2D" uid="uid://ti2yq6mj3wna" path="res://Assets/Treasure Hunters/Treasure Hunters/Palm Tree Island/Sprites/Objects/Ship Helm/Ship Helm Turn 01.png" id="7_tojtw"]
+[ext_resource type="Texture2D" uid="uid://cwdqp25c4pc1g" path="res://Assets/Treasure Hunters/Treasure Hunters/Palm Tree Island/Sprites/Objects/Ship Helm/Ship Helm Turn 02.png" id="8_c541x"]
+[ext_resource type="Texture2D" uid="uid://c5a3c3wf0e52m" path="res://Assets/Treasure Hunters/Treasure Hunters/Palm Tree Island/Sprites/Objects/Ship Helm/Ship Helm Turn 03.png" id="9_rqjbg"]
+[ext_resource type="Texture2D" uid="uid://dkuo1bjmrj8kw" path="res://Assets/Treasure Hunters/Treasure Hunters/Palm Tree Island/Sprites/Objects/Ship Helm/Ship Helm Turn 04.png" id="10_u4nly"]
+[ext_resource type="AudioStream" uid="uid://l8lwjo7yf6xv" path="res://Assets/coin_trim.ogg" id="12_bdw6q"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rp1nd"]
+size = Vector2(20, 24)
+
+[sub_resource type="Animation" id="Animation_k533f"]
+resource_name = "Idle"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("1_tqv4f"), ExtResource("2_26n3k"), ExtResource("3_y4sbr"), ExtResource("4_1jel1"), ExtResource("5_8ac1c"), ExtResource("6_aircy")]
+}
+
+[sub_resource type="Animation" id="Animation_v4h56"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_tqv4f")]
+}
+
+[sub_resource type="Animation" id="Animation_6wxrk"]
+resource_name = "Turn"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("7_tojtw"), ExtResource("8_c541x"), ExtResource("9_rqjbg"), ExtResource("10_u4nly")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vji40"]
+_data = {
+"Idle": SubResource("Animation_k533f"),
+"RESET": SubResource("Animation_v4h56"),
+"Turn": SubResource("Animation_6wxrk")
+}
+
+[node name="Checkpoint" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_ynkb4")
+
+[node name="col_checkpoint" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_rp1nd")
+
+[node name="spr_checkpoint" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_tqv4f")
+
+[node name="anim_checkpoint" type="AnimationPlayer" parent="."]
+root_node = NodePath("../spr_checkpoint")
+autoplay = "Idle"
+libraries = {
+"": SubResource("AnimationLibrary_vji40")
+}
+
+[node name="coin_audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_bdw6q")
+bus = &"SFX"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

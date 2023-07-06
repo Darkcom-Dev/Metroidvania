@@ -1,0 +1,77 @@
+[gd_scene load_steps=10 format=3 uid="uid://bllhg1dw08e4v"]
+
+[ext_resource type="Script" path="res://Enemies/tooth_attack.gd" id="1_7uxf3"]
+[ext_resource type="Texture2D" uid="uid://dfat5ioxtcy7d" path="res://Assets/Treasure Hunters/Treasure Hunters/The Crusty Crew/Sprites/Fierce Tooth/11-Attack Effect/Attack Effect 01.png" id="1_d2ooc"]
+[ext_resource type="Texture2D" uid="uid://igb5wwlfne70" path="res://Assets/Treasure Hunters/Treasure Hunters/The Crusty Crew/Sprites/Fierce Tooth/11-Attack Effect/Attack Effect 02.png" id="2_lfomd"]
+[ext_resource type="Texture2D" uid="uid://80te62obtpvk" path="res://Assets/Treasure Hunters/Treasure Hunters/The Crusty Crew/Sprites/Fierce Tooth/11-Attack Effect/Attack Effect 03.png" id="3_ix0f3"]
+[ext_resource type="AudioStream" uid="uid://mpp8qnt8aqcx" path="res://Assets/hit_sword_trim.ogg" id="5_t6g5m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uhw37"]
+
+[sub_resource type="Animation" id="Animation_7sey4"]
+resource_name = "Attack_effect"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_tooth:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("1_d2ooc"), ExtResource("2_lfomd"), ExtResource("3_ix0f3"), null]
+}
+
+[sub_resource type="Animation" id="Animation_dv34k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_tooth:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_d2ooc")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dnn14"]
+_data = {
+"Attack_effect": SubResource("Animation_7sey4"),
+"RESET": SubResource("Animation_dv34k")
+}
+
+[node name="Tooth_attack" type="Area2D"]
+z_index = 1
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_7uxf3")
+STR = 10
+attack_anim_name = "Attack_effect"
+target_group = "player"
+
+[node name="col_tooth" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_uhw37")
+debug_color = Color(0.94902, 0, 0.568627, 0.419608)
+
+[node name="spr_tooth" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_d2ooc")
+
+[node name="anim_tooth" type="AnimationPlayer" parent="."]
+autoplay = "Attack_effect"
+libraries = {
+"": SubResource("AnimationLibrary_dnn14")
+}
+
+[node name="tooth_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_t6g5m")
+autoplay = true
+bus = &"SFX"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="animation_finished" from="anim_tooth" to="." method="_on_anim_tooth_animation_finished"]

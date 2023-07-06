@@ -1,0 +1,85 @@
+[gd_scene load_steps=9 format=3 uid="uid://b6woj2ugj5t6b"]
+
+[ext_resource type="Script" path="res://Player/bullet.gd" id="1_kgogn"]
+[ext_resource type="Texture2D" uid="uid://dpmb8e6ws3v1b" path="res://Assets/bullet.png" id="1_l6ify"]
+[ext_resource type="PackedScene" uid="uid://dtlnr82p1ctiy" path="res://Player/explosion.tscn" id="2_q7cb8"]
+[ext_resource type="AudioStream" uid="uid://c6pjkpbv70nfj" path="res://Assets/h_Shoot.ogg" id="3_oxcrt"]
+
+[sub_resource type="Animation" id="Animation_3ujop"]
+resource_name = "Bullet"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_bullet:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_317nk"]
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_bullet:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8tegp"]
+_data = {
+"Bullet": SubResource("Animation_3ujop"),
+"RESET": SubResource("Animation_317nk")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t51q2"]
+radius = 4.0
+
+[node name="Bullet" type="Area2D"]
+collision_mask = 5
+script = ExtResource("1_kgogn")
+explosion_scene = ExtResource("2_q7cb8")
+
+[node name="anim_bullet" type="AnimationPlayer" parent="."]
+autoplay = "Bullet"
+libraries = {
+"": SubResource("AnimationLibrary_8tegp")
+}
+
+[node name="spr_bullet" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-4, 1)
+texture = ExtResource("1_l6ify")
+hframes = 2
+
+[node name="col_bullet" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_t51q2")
+
+[node name="sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_oxcrt")
+autoplay = true
+bus = &"SFX"
+
+[node name="Visible" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-3, 0.5)
+scale = Vector2(0.7, 0.35)
+
+[node name="autodestroy" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_Shoot_body_entered"]
+[connection signal="screen_exited" from="Visible" to="." method="_on_Visible_screen_exited"]
+[connection signal="timeout" from="autodestroy" to="." method="_on_timer_timeout"]

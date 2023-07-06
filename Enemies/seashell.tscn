@@ -1,0 +1,230 @@
+[gd_scene load_steps=30 format=3 uid="uid://cqtckkj8gvq1e"]
+
+[ext_resource type="Script" path="res://Enemies/seashell.gd" id="1_7yb6q"]
+[ext_resource type="Texture2D" uid="uid://2brbh5rk3ntb" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Idle/1.png" id="1_oeapx"]
+[ext_resource type="PackedScene" uid="uid://lmk3sywc11nk" path="res://Enemies/pearl.tscn" id="2_730ed"]
+[ext_resource type="Texture2D" uid="uid://cu82vwe52qaoh" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Hit/1.png" id="2_u8ses"]
+[ext_resource type="Texture2D" uid="uid://dvt4ixwnx7p6k" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Hit/2.png" id="3_op8uh"]
+[ext_resource type="PackedScene" uid="uid://fnnv1gj2x6bs" path="res://Level/coin_dropeable.tscn" id="3_wucx1"]
+[ext_resource type="Texture2D" uid="uid://dpyovbl44hvnj" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Hit/3.png" id="4_h80ki"]
+[ext_resource type="Texture2D" uid="uid://c2jwvj1arrdpu" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Hit/4.png" id="5_logsb"]
+[ext_resource type="Texture2D" uid="uid://cjnim4uuv8hhc" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Destroyed/1.png" id="6_h337e"]
+[ext_resource type="Texture2D" uid="uid://clkqffjlpar1l" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Fire/1.png" id="7_rbl4d"]
+[ext_resource type="Texture2D" uid="uid://bhnts21vmnqad" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Fire/2.png" id="8_ac38v"]
+[ext_resource type="Texture2D" uid="uid://bpssxp7a2rb36" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Fire/3.png" id="9_bp22l"]
+[ext_resource type="Texture2D" uid="uid://bou48h55g3dde" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Fire/4.png" id="10_524or"]
+[ext_resource type="Texture2D" uid="uid://0ukb8f4swlwf" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Fire/5.png" id="11_0nqnt"]
+[ext_resource type="Texture2D" uid="uid://beo20rk8ffupn" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Fire/6.png" id="12_k4uu6"]
+[ext_resource type="Texture2D" uid="uid://c6el4mifj4syq" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Destroyed/2.png" id="13_3ow20"]
+[ext_resource type="Texture2D" uid="uid://bo1ofgnwjn6gw" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Destroyed/5.png" id="14_ch68a"]
+[ext_resource type="Texture2D" uid="uid://bd3rhohkcvhji" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Destroyed/3.png" id="15_gk88f"]
+[ext_resource type="Texture2D" uid="uid://blayvyqkt2vhb" path="res://Assets/Treasure Hunters/Treasure Hunters/Shooter Traps/Sprites/Seashell/Seashell Destroyed/4.png" id="16_ofm86"]
+[ext_resource type="AudioStream" uid="uid://0hvp366umwgs" path="res://Assets/Big_explosion_trim.ogg" id="18_ewn61"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_reyfo"]
+size = Vector2(32, 16)
+
+[sub_resource type="Animation" id="Animation_5irrh"]
+resource_name = "Dead"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_seashell:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_h337e")]
+}
+
+[sub_resource type="Animation" id="Animation_ybht6"]
+resource_name = "Fire"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_seashell:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("7_rbl4d"), ExtResource("8_ac38v"), ExtResource("9_bp22l"), ExtResource("10_524or"), ExtResource("11_0nqnt"), ExtResource("12_k4uu6")]
+}
+
+[sub_resource type="Animation" id="Animation_v74fg"]
+resource_name = "Hit"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_seashell:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("2_u8ses"), ExtResource("3_op8uh"), ExtResource("4_h80ki"), ExtResource("5_logsb")]
+}
+
+[sub_resource type="Animation" id="Animation_uv0wy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_seashell:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_oeapx")]
+}
+
+[sub_resource type="Animation" id="Animation_04sk6"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spr_seashell:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_oeapx")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_helgf"]
+_data = {
+"Dead": SubResource("Animation_5irrh"),
+"Fire": SubResource("Animation_ybht6"),
+"Hit": SubResource("Animation_v74fg"),
+"RESET": SubResource("Animation_uv0wy"),
+"idle": SubResource("Animation_04sk6")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ht4dk"]
+size = Vector2(32, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0a622"]
+size = Vector2(21, 3.5)
+
+[node name="Seashell" type="CharacterBody2D" groups=["enemy"]]
+texture_filter = 1
+collision_layer = 4
+collision_mask = 5
+motion_mode = 1
+script = ExtResource("1_7yb6q")
+pearl_scene = ExtResource("2_730ed")
+speed = 0.0
+hit_speed = 0.0
+health = 10
+drop_1 = ExtResource("3_wucx1")
+rarity1 = 30
+drop_2 = ExtResource("3_wucx1")
+rarity2 = 10
+
+[node name="col_seashell" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_reyfo")
+
+[node name="spr_seashell" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+texture = ExtResource("1_oeapx")
+
+[node name="anim_seashell" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+libraries = {
+"": SubResource("AnimationLibrary_helgf")
+}
+
+[node name="parteA" type="CPUParticles2D" parent="."]
+position = Vector2(-8, -8)
+emitting = false
+amount = 2
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource("13_3ow20")
+direction = Vector2(-1, -1)
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+
+[node name="parteD" type="CPUParticles2D" parent="."]
+position = Vector2(-8, 0)
+emitting = false
+amount = 2
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource("14_ch68a")
+direction = Vector2(-1, -1)
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+
+[node name="parteB" type="CPUParticles2D" parent="."]
+position = Vector2(8, -8)
+emitting = false
+amount = 2
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource("15_gk88f")
+direction = Vector2(1, -1)
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+
+[node name="parteC" type="CPUParticles2D" parent="."]
+position = Vector2(8, 0)
+emitting = false
+amount = 2
+one_shot = true
+explosiveness = 1.0
+fract_delta = false
+texture = ExtResource("16_ofm86")
+direction = Vector2(1, -1)
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+
+[node name="explosion_sfx" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("18_ewn61")
+bus = &"SFX"
+
+[node name="dead_timer" type="Timer" parent="."]
+
+[node name="damage_area" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="damage_shape" type="CollisionShape2D" parent="damage_area"]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_ht4dk")
+debug_color = Color(0.988235, 0, 0.294118, 0.419608)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, -18.75)
+shape = SubResource("RectangleShape2D_0a622")
+
+[node name="ray_attack" type="RayCast2D" parent="."]
+position = Vector2(-24, -8)
+target_position = Vector2(-150, 0)
+collision_mask = 2
+
+[node name="attack_timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="hurting_timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="animation_finished" from="anim_seashell" to="." method="_on_anim_seashell_animation_finished"]
+[connection signal="body_entered" from="damage_area" to="." method="_on_damage_area_body_entered"]
+[connection signal="timeout" from="attack_timer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="hurting_timer" to="." method="_on_hurting_timer_timeout"]
