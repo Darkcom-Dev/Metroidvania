@@ -3,6 +3,27 @@ extends CanvasLayer
 
 @export var first_scene : String
 
+# Usado para el reinicio de los stats
+var stats : Dictionary = {
+	'HP':8,
+	'max_HP':8,
+	'MP':8,
+	'max_MP' : 8,
+	'XP':1,
+	'max_XP':8,
+	'LV':1,
+	'coins': 0,
+	'STR' : 4,
+	'DEF' : 4,
+	'INT' : 8,
+	'LCK' : 8
+}
+# Player skills
+var skills : Dictionary = {
+	'wall_jump' : false, 
+	'dash' : false,
+	'wide_attack' : false
+	}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -22,14 +43,16 @@ func _ready():
 
 func _on_start_pressed():
 	PLAYER.set_process(true)
-	PLAYER.disable_platform_check()
+	#PLAYER.disable_platform_check()
 	PLAYER.visible = true
 	CAMERA.set_process(true)
 	GUI.set_process(true)
 	GUI.visible = true
 	GUI.reset_gui()
-	GAME_MANAGER.stats.HP = GAME_MANAGER.stats.max_HP
-	GAME_MANAGER.stats.coins = 0
+	GAME_MANAGER.stats = stats
+	GAME_MANAGER.skills = skills
+	GAME_MANAGER._current_XP = 0
+	GAME_MANAGER._current_LV = 1
 	
 	get_tree().change_scene_to_file(first_scene)
 	get_tree().paused = false
@@ -38,7 +61,7 @@ func _on_start_pressed():
 func _on_continue_pressed():
 	GAME_MANAGER.load_data()
 	PLAYER.set_process(true)
-	PLAYER.disable_platform_check()
+	#PLAYER.disable_platform_check()
 	PLAYER.visible = true
 	CAMERA.set_process(true)
 	GUI.set_process(true)

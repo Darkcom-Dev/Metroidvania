@@ -82,6 +82,7 @@ func hurt():
 	$damage_timer.start()		
 
 func dead_anim():
+	$damage_area.collision_mask = 0
 	playback.travel('Dead_hit')
 	print('dead_anim')
 

@@ -10,7 +10,7 @@ func _on_body_entered(body):
 	if body.is_in_group('player'):
 		
 		# Disable platform check
-		body.disable_platform_check()
+		#body.disable_platform_check()
 		GAME_MANAGER.is_vertical = is_vertical
 		# Save player position
 		GAME_MANAGER.location.player_pos = body.position

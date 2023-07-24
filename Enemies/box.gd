@@ -22,7 +22,7 @@ func hurt():
 	#$hurt_time.start()
 	
 func dead_anim():
-	PLAYER.disable_platform_check()
+	#PLAYER.disable_platform_check()
 	$anim_box.play("Destroy")
 	$parteA.emitting = true
 	$parteB.emitting = true

@@ -82,7 +82,7 @@ func _on_options_pressed():
 func _on_main_menu_pressed():
 	PLAYER.position = Vector2(384,216) # Centra al personaje en mitad del viewport
 	PLAYER.visible = false
-	PLAYER.disable_platform_check()
+	#PLAYER.disable_platform_check()
 	CAMERA.position = PLAYER.position
 	get_tree().paused = false
 	$Pause.visible = false

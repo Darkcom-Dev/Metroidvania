@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=3 uid="uid://dugum8jbam4fg"]
+[gd_scene load_steps=84 format=3 uid="uid://dugum8jbam4fg"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_0cs0l"]
 [ext_resource type="AudioStream" uid="uid://bx251dbar7ix" path="res://Assets/jump_trim.ogg" id="2_5l12h"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bybvixbnd7ds1" path="res://Assets/Treasure Hunters/Treasure Hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose with Sword/09-Idle Sword/Idle Sword 04.png" id="6_y7n7d"]
 [ext_resource type="Texture2D" uid="uid://b7sk1r3im42fj" path="res://Assets/Treasure Hunters/Treasure Hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose with Sword/11-Jump Sword/Jump Sword 01.png" id="7_357eg"]
 [ext_resource type="Texture2D" uid="uid://cjhft6uun1jk7" path="res://Assets/Treasure Hunters/Treasure Hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose with Sword/09-Idle Sword/Idle Sword 05.png" id="7_ee4fh"]
+[ext_resource type="Script" path="res://Player/spr_player.gd" id="7_nqguk"]
 [ext_resource type="Texture2D" uid="uid://bve522acwrjpg" path="res://Assets/Treasure Hunters/Treasure Hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose with Sword/10-Run Sword/Run Sword 01.png" id="8_i7u0n"]
 [ext_resource type="Texture2D" uid="uid://ba4q2g4vonoxq" path="res://Assets/Treasure Hunters/Treasure Hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose with Sword/10-Run Sword/Run Sword 02.png" id="9_mspaq"]
 [ext_resource type="Texture2D" uid="uid://d174ek4ita32c" path="res://Assets/Treasure Hunters/Treasure Hunters/Captain Clown Nose/Sprites/Captain Clown Nose/Captain Clown Nose with Sword/10-Run Sword/Run Sword 03.png" id="10_mueu1"]
@@ -414,6 +415,7 @@ collision_mask = 4
 [node name="spr_player" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("3_uyb35")
+script = ExtResource("7_nqguk")
 
 [node name="Blood" type="GPUParticles2D" parent="."]
 texture_filter = 1

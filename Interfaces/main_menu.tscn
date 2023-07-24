@@ -107,7 +107,7 @@ events = [SubResource("InputEventKey_4n5n2")]
 [node name="Main_menu" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_8ysni")
-first_scene = "res://Level/level_movement.tscn"
+first_scene = "res://Level/level.tscn"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -215,6 +215,7 @@ horizontal_alignment = 2
 visible = false
 
 [node name="Controls" parent="." instance=ExtResource("5_2aq7j")]
+visible = false
 
 [connection signal="animation_finished" from="Fade_in" to="." method="_on_fade_in_animation_finished"]
 [connection signal="pressed" from="VBoxContainer2/Menu/Start" to="." method="_on_start_pressed"]

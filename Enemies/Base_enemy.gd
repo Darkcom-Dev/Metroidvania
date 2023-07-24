@@ -84,9 +84,10 @@ func drop():
 			
 	if drop_instance != null:
 		print(str(drop_instance.name) + ' has been dropped')
-	
-		get_parent().add_child(drop_instance)
-		drop_instance.global_position = global_position
+			
+		var enemy_global_pos = global_transform.origin
+		drop_instance.global_position = enemy_global_pos
+		get_tree().get_root().call_deferred('add_child',drop_instance)
 
 func dead_anim():
 	"""

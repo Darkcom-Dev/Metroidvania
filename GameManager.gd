@@ -1,6 +1,5 @@
 extends Node
 
-
 const SAVEFILE : String = 'user://SAVEFILE.save'
 var is_vertical : bool = false
 var is_loaded_from_disk : bool = false
@@ -16,12 +15,12 @@ var location : Dictionary = {
 
 # Player stats
 var stats : Dictionary = {
-	'HP':100,
-	'max_HP':100,
-	'MP':100,
-	'max_MP' : 100,
+	'HP':8,
+	'max_HP':8,
+	'MP':8,
+	'max_MP' : 8,
 	'XP':1,
-	'max_XP':100,
+	'max_XP':8,
 	'LV':1,
 	'coins': 0,
 	'STR' : 4,

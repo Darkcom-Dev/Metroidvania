@@ -10,10 +10,12 @@ extends CharacterBody2D
 # Distancia de detecion de enemigo
 const CAST_ENEMY : int = 32
 # Comprobaciones de acciones
+
 # Creo es conveniente un diccionario
 var status : Dictionary = {
 	'can_move': false,
 	'is_hurting': false,
+	'is_attacking' : false,
 	'coyote_time': false,
 	'can_dash' : false,
 	'dashing' : false,
@@ -31,8 +33,10 @@ var jump_counter : int = 0
 
 # Stats
 @export var health : int = 100
-
+var vertical_direction : float = 0
+var direction : float = 0
 var facing : int
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -55,9 +59,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed('Map'):
 		GUI.map()
 	
-	status.can_move = not playback.get_current_node() in ['Attack1', 'Attack2'] or not status.dashing # dash anim
-	
-	facing = -1 if $spr_player.flip_h else 1
+	altered_state_control()
 	
 	# Add friction on wall
 	if is_on_wall_only() and velocity.y >= -16 and GAME_MANAGER.skills['wall_jump']:
@@ -76,31 +78,31 @@ func _physics_process(delta):
 			
 		
 	# Reinicia el contador de saltos
-	if is_on_floor() or not is_on_wall_only():
-		jump_counter = 0
+	if is_on_ceiling(): jump_counter = 1
+	elif is_on_floor() or not is_on_wall_only():jump_counter = 0
 		
-		
-	var vertical_direction = Input.get_axis("ui_down", "ui_up")
-	cross_platform(vertical_direction)	
+	# Variables de direccion y facing
+	vertical_direction = Input.get_axis("ui_down", "ui_up")
+	status.can_move = not status.is_attacking or not status.dashing # dash anim
+	if status.can_move:
+		direction = Input.get_axis("ui_left", "ui_right")
+	
+	if direction == -1:
+		facing = -1
+	elif direction == 1:
+		facing = 1
+	
+	cross_platform()
 	
 	# Handle Jump.
 	if Input.is_action_just_pressed("Jump") and (is_on_floor())and vertical_direction != -1 and not status.dashing:
 		velocity.y = jump_velocity
 		$Jump.play()
-	
-	# Execute dash	
-	status.can_dash = not status.dashing #and is_on_floor()
-	# la condicion es que no este en dash y que no se ejecute en el aire
-	if Input.is_action_just_pressed("Dash") and not Input.is_action_just_pressed('Jump'):
-		dash_control()
 		
-	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	# can_move = not is_on_wall_only() # Esto es algo inutil
-	var direction = 0
-	if not status.dashing and not Input.is_action_just_released("Attack"):
-		direction = Input.get_axis("ui_left", "ui_right")
+		
+
 	
 	if not status.is_hurting and not status.dashing:
 		velocity.x = direction * walk_speed if direction and status.can_move else move_toward(velocity.x, 0, walk_speed)
@@ -108,46 +110,38 @@ func _physics_process(delta):
 	# Emision de particulas de polvo
 	if direction != 0:
 		$Dust.emitting = is_on_floor() or is_on_wall_only()
-	
-	
-	
-	animation_control(direction)
-	if GAME_MANAGER.skills['wall_jump']:
-		wall_jump(direction)
-	
-	attack()
-	if is_altered_state == false and state != 'normal':
-		state_effect() 
-		is_altered_state = true
+		
+	animation_control()	
+	ray_attack_control()
+	if Input.is_action_just_pressed('Attack'):		attack()	
 	move_and_slide()
+	
+	status.can_dash = not status.dashing #and is_on_floor()
+	# la condicion es que no este en dash y que no se ejecute en el aire
+	if Input.is_action_just_pressed("Dash"):dash_control()
+	if GAME_MANAGER.skills['wall_jump']:wall_jump()
 
-func state_effect():
-	if state == 'poisoned':
-		$spr_player.self_modulate = '#00ff00'
-	elif state == 'petrified':
-		$spr_player.self_modulate = '#808080'
-	elif state == 'cursed':
-		$spr_player.self_modulate = '#ff00ff'
-	else:
-		$spr_player.self_modulate = '#ffffff'
-	if state in ['poisoned','petrified','cursed']:
-		$state_effect_timer.start()
-		print('player state: ' + state)
-
+func altered_state_control():
+	if is_altered_state == false and state != 'normal':
+		
+		if PLAYER.state in ['poisoned','petrified','cursed']:
+			$state_effect_timer.start()
+			print('player state: ' + state)
+		is_altered_state = true
+		
 func dash_control():
 	if is_on_floor_only() and status.can_dash and GAME_MANAGER.skills['dash']:
-		playback.travel('Hit') # No funciona
+		playback.travel('Hit') # Funciona solo despues de move_and_slide
 		status.dashing = true
 		status.can_dash = false
-		motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
+		
 		$dash_time.start()
-		$dash_sfx.play()	
-		velocity.x = -dash_speed if $spr_player.flip_h else dash_speed
-		velocity.y = -1
+		$dash_sfx.play()
+		# move_toward(velocity.x, 0, dash_speed * facing) # solo un poco mas responsivo
+		velocity.x = dash_speed * facing
+		velocity.y = -10	
 	
-	
-
-func cross_platform(vertical):
+func cross_platform():
 	'''
 	Mecanica que permite al personaje traspasar plataformas sobre las que se apoya
 	Nota: funciona en conjunto con disable_pltform_check
@@ -159,14 +153,13 @@ func cross_platform(vertical):
 		
 		# Obtiene la colider para saber si pertenece al grupo de plataformas traspasables
 		var collider = get_slide_collision(slide_count -1).get_collider()
-	
-		if status.platform_check_is_active:
-			if  collider.is_in_group('platform') and vertical == -1 and Input.is_action_just_pressed('Jump'):
-				$capsule.disabled = true
-				$platform_timer.start()
-				
-
-
+		
+		if collider:
+			if status.platform_check_is_active:
+				if  collider.is_in_group('platform') and vertical_direction == -1 and Input.is_action_just_pressed('Jump'):
+					$capsule.disabled = true
+					$platform_timer.start()
+					
 func disable_platform_check():
 	status.platform_check_is_active = false
 	$platform_check.start()
@@ -188,11 +181,9 @@ func damage(hit_damage : int = 1):
 		total_damage = 0
 	
 	if not status.is_hurting:
-		GAME_MANAGER.stats.HP -= total_damage
-		#motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
+		GAME_MANAGER.stats.HP -= total_damage		
 		status.is_hurting = true
-		velocity.x = hit_speed if $spr_player.flip_h else -hit_speed
-		#velocity.y = -10
+		velocity.x = hit_speed * -facing
 		$damage_timer.start()
 		playback.travel('Hit')
 		CAMERA.counter = 30
@@ -200,88 +191,66 @@ func damage(hit_damage : int = 1):
 		
 		emit_blood()
 
-func attack():
-	if Input.is_action_just_pressed('Attack'):
-		var random_pitch = randf_range(.75,1.15)
-		if is_on_floor():			
-			$hit_sword.pitch_scale = random_pitch
-			if playback.get_current_node() in ['Idle', 'Run']:
-				playback.travel('Attack1')	
-			elif playback.get_current_node() == 'Attack1':
-				playback.travel('Attack2')
-				$hit_sword.play()
-			elif playback.get_current_node() == 'Attack2':
-				playback.travel('Attack3')
-				$hit_sword.play()
-		elif not is_on_floor():
-			if playback.get_current_node() == 'Jump':
-				playback.travel('Attack3')
-				$hit_sword.play()
-			elif playback.get_current_node() == 'Fall':
-				playback.travel('Attack2')
-				$hit_sword.play()
-		
-		if playback.get_current_node() in ['Attack1','Attack2', 'Attack3'] and GAME_MANAGER.skills.wide_attack:
-			var effect_instance = slash_scene.instantiate()
-			add_child(effect_instance)
-			effect_instance.position = $ray_attack.target_position
-			effect_instance.scale.x = 1 if $ray_attack.target_position.x > 0 else -1
-		
-	var hit_animation = playback.get_current_node() in ['Attack1', 'Attack2', 'Attack3']
-	$ray_attack.enabled = hit_animation
-	$ray_attack.target_position.x = -CAST_ENEMY if $spr_player.flip_h else CAST_ENEMY
+func ray_attack_control():
+	status.is_attacking = playback.get_current_node() in ['Attack1', 'Attack2', 'Attack3']
+	$ray_attack.enabled = status.is_attacking
+	$ray_attack.target_position.x = CAST_ENEMY * facing
 	
 	var body = $ray_attack.get_collider()
-	if $ray_attack.is_colliding() and body.is_in_group('enemy') and hit_animation:
-		body.damage(GAME_MANAGER.stats.STR)		
-	
-	
-	
+	if $ray_attack.is_colliding() and body.is_in_group('enemy') and status.is_attacking:
+		body.damage(GAME_MANAGER.stats.STR)
 
-func wall_jump(direction):
+func attack():	
+	# hitSword
+	var random_pitch = randf_range(.75,1.15)
+	$hit_sword.pitch_scale = random_pitch
+	if status.is_attacking: $hit_sword.play()
 	
+	var attack_dict : Dictionary = {
+		'Idle':'Attack1',
+		'Run':'Attack1',
+		'Attack1':'Attack2',
+		'Attack2':'Attack3',			
+		'Jump':'Attack3',
+		'Fall':'Attack2',
+	}
+	# Animation
+	if playback.get_current_node() in attack_dict:			
+		playback.travel(attack_dict[playback.get_current_node()])
+			
+	# Slash attack
+	if status.is_attacking and GAME_MANAGER.skills.wide_attack:
+		var effect_instance = slash_scene.instantiate()
+		add_child(effect_instance)
+		effect_instance.position = $ray_attack.target_position
+		effect_instance.scale.x = 1 if $ray_attack.target_position.x > 0 else -1	
+
+func wall_jump():	
 	if status.coyote_time and Input.is_action_just_pressed('Jump') and jump_counter < 1:		
 		velocity.y = bouncing_jump
-		velocity.x = direction * walk_speed
-		jump_counter += 1
-		$Dust.emitting = true # No funciona
-		
+		velocity.x = facing * -walk_speed
+		jump_counter += 1		
 
-func animation_control(direction):
-	# Animation control
-	if direction == 1:
-		$spr_player.flip_h = false
-	elif direction == -1:
-		$spr_player.flip_h = true
-	else:
-		pass
-		
+func animation_control():
 	if not status.is_hurting:	
 		if is_on_floor():
 			playback.travel("Idle" if direction == 0 else "Run")		
 		else:
 			playback.travel("Jump" if velocity.y < 0 else "Fall")			
-	
-
 
 func _on_damage_timer_timeout():	
-#	motion_mode = CharacterBody2D.MOTION_MODE_GROUNDED
 	status.is_hurting = false
 	velocity.x = 0
-
 
 func _on_platform_timer_timeout():
 	$capsule.disabled = false
 
-
 func _on_coyote_time_timeout():
 	status.coyote_time = false
-
 
 func _on_dash_time_timeout():
 	motion_mode = CharacterBody2D.MOTION_MODE_GROUNDED
 	status.dashing = false
-
 
 func _on_platform_check_timeout():
 	status.platform_check_is_active = true
@@ -293,9 +262,7 @@ func _on_anim_player_animation_finished(_anim_name):
 func _on_state_effect_timer_timeout():
 	state = 'normal'
 	is_altered_state = false
-	$spr_player.self_modulate = '#ffffff'
-	print('player state: NORMALIZED')
-
+	
 
 func _on_restore_mp_timer_timeout():
 	if state == 'normal':
