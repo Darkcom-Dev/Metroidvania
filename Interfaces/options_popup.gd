@@ -10,10 +10,11 @@ func _ready():
 	sfx_index = AudioServer.get_bus_index('SFX')
 	print('bgm: ' + str(bgm_index) + ' sfx: ' + str(sfx_index))
 	load_data()
+	$BG_popup/MarginContainer/VBoxContainer/HBox_VSinc/Accept.grab_focus()
 	
 func _process(_delta):
-	$HBoxContainer/extras/bgm_vol.text = str($HBoxContainer/Controls/bgm_slider.value) + ' db'
-	$HBoxContainer/extras/sfx_vol.text = str($HBoxContainer/Controls/sfx_slider.value) + ' db'
+	$BG_popup/MarginContainer/VBoxContainer/HBox_BGM_Volume/bgm_vol.text = str($BG_popup/MarginContainer/VBoxContainer/HBox_BGM_Volume/bgm_slider.value) + ' db'
+	$BG_popup/MarginContainer/VBoxContainer/HBox_SFX_Volume/sfx_vol.text = str($BG_popup/MarginContainer/VBoxContainer/HBox_SFX_Volume/sfx_slider.value) + ' db'
 
 func _on_bgm_slider_value_changed(value):
 	AudioServer.set_bus_volume_db(bgm_index, value)
@@ -49,13 +50,17 @@ func load_data():
 		#Vsync genera problemas al personaje
 #		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if GAME_OPTIONS.options.vsync else DisplayServer.VSYNC_DISABLED)
 #	
-		$HBoxContainer/Controls/bgm_slider.value = GAME_OPTIONS.options.bgm_volume
-		$HBoxContainer/Controls/sfx_slider.value = GAME_OPTIONS.options.sfx_volume
-		$HBoxContainer/Controls/MenuButton.selected = GAME_OPTIONS.options.mode
+		$BG_popup/MarginContainer/VBoxContainer/HBox_BGM_Volume/bgm_slider.value = GAME_OPTIONS.options.bgm_volume
+		$BG_popup/MarginContainer/VBoxContainer/HBox_SFX_Volume/sfx_slider.value = GAME_OPTIONS.options.sfx_volume
+		$BG_popup/MarginContainer/VBoxContainer/HBox_Mode/MenuButton.selected = GAME_OPTIONS.options.mode
 #		$HBoxContainer/Controls/CheckButton.toggle_mode = GAME_OPTIONS.options.vsync
 	
-		$HBoxContainer/extras/bgm_vol.text = str($HBoxContainer/Controls/bgm_slider.value) + ' db'
-		$HBoxContainer/extras/sfx_vol.text = str($HBoxContainer/Controls/sfx_slider.value) + ' db'
+		$BG_popup/MarginContainer/VBoxContainer/HBox_BGM_Volume/bgm_vol.text = str($BG_popup/MarginContainer/VBoxContainer/HBox_BGM_Volume/bgm_slider.value) + ' db'
+		$BG_popup/MarginContainer/VBoxContainer/HBox_SFX_Volume/sfx_vol.text = str($BG_popup/MarginContainer/VBoxContainer/HBox_SFX_Volume/sfx_slider.value) + ' db'
 		first_time = false
 	
 	
+
+
+func _on_focus_entered():
+	$BG_popup/MarginContainer/VBoxContainer/HBox_VSinc/Accept.grab_focus()

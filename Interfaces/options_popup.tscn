@@ -1,120 +1,117 @@
-[gd_scene load_steps=4 format=3 uid="uid://mvx8icctge75"]
+[gd_scene load_steps=3 format=3 uid="uid://mvx8icctge75"]
 
-[ext_resource type="LabelSettings" uid="uid://cysg3dgy7bb23" path="res://Assets/pause_label_settings.tres" id="1_mdf75"]
+[ext_resource type="Theme" uid="uid://cj3dqg16ymw3k" path="res://Interfaces/isekai.tres" id="1_3bx4s"]
 [ext_resource type="Script" path="res://Interfaces/options_popup.gd" id="1_vru16"]
-[ext_resource type="FontFile" uid="uid://duk3lygtddcxa" path="res://Assets/h_NokiaCellphoneFC.ttf" id="2_qxxf2"]
 
 [node name="Options_popup" type="Popup"]
+disable_3d = true
+transparent_bg = true
+canvas_item_default_texture_filter = 0
 title = "Options"
 position = Vector2i(8, 8)
-size = Vector2i(368, 200)
+size = Vector2i(368, 160)
 visible = true
+unresizable = false
+transparent = true
+content_scale_mode = 2
+content_scale_aspect = 1
+theme = ExtResource("1_3bx4s")
 script = ExtResource("1_vru16")
 
-[node name="BG_popup" type="ColorRect" parent="."]
-anchors_preset = 15
+[node name="BG_popup" type="Panel" parent="."]
+custom_minimum_size = Vector2(10, 128)
+anchors_preset = 10
 anchor_right = 1.0
-anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical = 2
-color = Color(1.08294e-07, 0.156971, 0.185611, 1)
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -113.5
-offset_top = -60.0
-offset_right = 113.5
-offset_bottom = 60.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
+[node name="MarginContainer" type="MarginContainer" parent="BG_popup"]
+offset_right = 211.0
+offset_bottom = 123.0
 
-[node name="Labels" type="VBoxContainer" parent="HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="BG_popup/MarginContainer"]
 layout_mode = 2
 
-[node name="Audio" type="Label" parent="HBoxContainer/Labels"]
+[node name="HBox_Audio_Label" type="HBoxContainer" parent="BG_popup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Audio" type="Label" parent="BG_popup/MarginContainer/VBoxContainer/HBox_Audio_Label"]
 texture_filter = 1
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_qxxf2")
-theme_override_font_sizes/font_size = 12
 text = "Audio"
 vertical_alignment = 1
 uppercase = true
 
-[node name="BGM_Volume" type="Label" parent="HBoxContainer/Labels"]
+[node name="HBox_BGM_Volume" type="HBoxContainer" parent="BG_popup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="BGM_Volume" type="Label" parent="BG_popup/MarginContainer/VBoxContainer/HBox_BGM_Volume"]
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "BGM Volume"
-label_settings = ExtResource("1_mdf75")
 vertical_alignment = 1
 
-[node name="SFX_Volume" type="Label" parent="HBoxContainer/Labels"]
+[node name="bgm_slider" type="HSlider" parent="BG_popup/MarginContainer/VBoxContainer/HBox_BGM_Volume"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+min_value = -50.0
+max_value = 0.0
+value = -15.0
+ticks_on_borders = true
+
+[node name="bgm_vol" type="Label" parent="BG_popup/MarginContainer/VBoxContainer/HBox_BGM_Volume"]
+layout_mode = 2
+text = "80 db"
+vertical_alignment = 1
+
+[node name="HBox_SFX_Volume" type="HBoxContainer" parent="BG_popup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SFX_Volume" type="Label" parent="BG_popup/MarginContainer/VBoxContainer/HBox_SFX_Volume"]
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "SFX Volume"
-label_settings = ExtResource("1_mdf75")
 vertical_alignment = 1
 
-[node name="Video" type="Label" parent="HBoxContainer/Labels"]
+[node name="sfx_slider" type="HSlider" parent="BG_popup/MarginContainer/VBoxContainer/HBox_SFX_Volume"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+min_value = -50.0
+max_value = 0.0
+value = -15.0
+ticks_on_borders = true
+
+[node name="sfx_vol" type="Label" parent="BG_popup/MarginContainer/VBoxContainer/HBox_SFX_Volume"]
+layout_mode = 2
+text = "80 db"
+vertical_alignment = 1
+
+[node name="HBox_Video_Label" type="HBoxContainer" parent="BG_popup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Video" type="Label" parent="BG_popup/MarginContainer/VBoxContainer/HBox_Video_Label"]
 texture_filter = 1
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_qxxf2")
-theme_override_font_sizes/font_size = 12
 text = "Video
 "
 vertical_alignment = 1
 uppercase = true
 
-[node name="Mode" type="Label" parent="HBoxContainer/Labels"]
+[node name="HBox_Mode" type="HBoxContainer" parent="BG_popup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Mode" type="Label" parent="BG_popup/MarginContainer/VBoxContainer/HBox_Mode"]
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "Mode
 "
-label_settings = ExtResource("1_mdf75")
 vertical_alignment = 1
 
-[node name="VSinc" type="Label" parent="HBoxContainer/Labels"]
+[node name="MenuButton" type="OptionButton" parent="BG_popup/MarginContainer/VBoxContainer/HBox_Mode"]
+texture_filter = 1
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "VSinc
-"
-label_settings = ExtResource("1_mdf75")
-vertical_alignment = 1
-
-[node name="Controls" type="VBoxContainer" parent="HBoxContainer"]
-layout_mode = 2
-
-[node name="HSeparator" type="HSeparator" parent="HBoxContainer/Controls"]
-layout_mode = 2
-
-[node name="HSeparator4" type="HSeparator" parent="HBoxContainer/Controls"]
-layout_mode = 2
-
-[node name="bgm_slider" type="HSlider" parent="HBoxContainer/Controls"]
-layout_mode = 2
-min_value = -50.0
-max_value = 0.0
-value = -15.0
-ticks_on_borders = true
-
-[node name="sfx_slider" type="HSlider" parent="HBoxContainer/Controls"]
-layout_mode = 2
-min_value = -50.0
-max_value = 0.0
-value = -15.0
-ticks_on_borders = true
-
-[node name="HSeparator2" type="HSeparator" parent="HBoxContainer/Controls"]
-layout_mode = 2
-
-[node name="HSeparator3" type="HSeparator" parent="HBoxContainer/Controls"]
-layout_mode = 2
-
-[node name="MenuButton" type="OptionButton" parent="HBoxContainer/Controls"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_qxxf2")
-theme_override_font_sizes/font_size = 8
 item_count = 2
 selected = 0
 popup/item_0/text = "Windowed"
@@ -122,52 +119,36 @@ popup/item_0/id = 0
 popup/item_1/text = "Fullscreen"
 popup/item_1/id = 1
 
-[node name="CheckButton" type="CheckButton" parent="HBoxContainer/Controls"]
+[node name="HBox_VSinc" type="HBoxContainer" parent="BG_popup/MarginContainer/VBoxContainer"]
 texture_filter = 1
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_qxxf2")
-theme_override_font_sizes/font_size = 8
+
+[node name="VSinc" type="Label" parent="BG_popup/MarginContainer/VBoxContainer/HBox_VSinc"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "VSinc
+"
+vertical_alignment = 1
+
+[node name="CheckButton" type="CheckButton" parent="BG_popup/MarginContainer/VBoxContainer/HBox_VSinc"]
+texture_filter = 1
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
 text = "VSync"
 alignment = 2
 text_direction = 3
 
-[node name="extras" type="VBoxContainer" parent="HBoxContainer"]
-layout_mode = 2
-
-[node name="HSeparator4" type="HSeparator" parent="HBoxContainer/extras"]
-layout_mode = 2
-
-[node name="HSeparator7" type="HSeparator" parent="HBoxContainer/extras"]
-layout_mode = 2
-
-[node name="HSeparator5" type="HSeparator" parent="HBoxContainer/extras"]
-layout_mode = 2
-
-[node name="bgm_vol" type="Label" parent="HBoxContainer/extras"]
-layout_mode = 2
-text = "80 db"
-label_settings = ExtResource("1_mdf75")
-vertical_alignment = 1
-
-[node name="sfx_vol" type="Label" parent="HBoxContainer/extras"]
-layout_mode = 2
-text = "80 db"
-label_settings = ExtResource("1_mdf75")
-vertical_alignment = 1
-
-[node name="HSeparator6" type="HSeparator" parent="HBoxContainer/extras"]
-layout_mode = 2
-
-[node name="Accept" type="Button" parent="HBoxContainer/extras"]
+[node name="Accept" type="Button" parent="BG_popup/MarginContainer/VBoxContainer/HBox_VSinc"]
 texture_filter = 1
+clip_contents = true
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_qxxf2")
-theme_override_font_sizes/font_size = 12
 text = "Aceptar"
 
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
-[connection signal="value_changed" from="HBoxContainer/Controls/bgm_slider" to="." method="_on_bgm_slider_value_changed"]
-[connection signal="value_changed" from="HBoxContainer/Controls/sfx_slider" to="." method="_on_sfx_slider_value_changed"]
-[connection signal="item_selected" from="HBoxContainer/Controls/MenuButton" to="." method="_on_menu_button_item_selected"]
-[connection signal="toggled" from="HBoxContainer/Controls/CheckButton" to="." method="_on_check_button_toggled"]
-[connection signal="pressed" from="HBoxContainer/extras/Accept" to="." method="_on_accept_pressed"]
+[connection signal="value_changed" from="BG_popup/MarginContainer/VBoxContainer/HBox_BGM_Volume/bgm_slider" to="." method="_on_bgm_slider_value_changed"]
+[connection signal="value_changed" from="BG_popup/MarginContainer/VBoxContainer/HBox_SFX_Volume/sfx_slider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="item_selected" from="BG_popup/MarginContainer/VBoxContainer/HBox_Mode/MenuButton" to="." method="_on_menu_button_item_selected"]
+[connection signal="toggled" from="BG_popup/MarginContainer/VBoxContainer/HBox_VSinc/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="pressed" from="BG_popup/MarginContainer/VBoxContainer/HBox_VSinc/Accept" to="." method="_on_accept_pressed"]

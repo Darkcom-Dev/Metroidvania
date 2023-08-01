@@ -1,5 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://dlpvmlbla4bfi"]
 
+[ext_resource type="Theme" uid="uid://cj3dqg16ymw3k" path="res://Interfaces/isekai.tres" id="1_7dj0v"]
 [ext_resource type="Script" path="res://Interfaces/minimap.gd" id="1_juy28"]
 [ext_resource type="Texture2D" uid="uid://dwksddhfgcgcm" path="res://Assets/Treasure Hunters/Treasure Hunters/Wood and Paper UI/Sprites/Yellow Paper/5.png" id="1_pq625"]
 [ext_resource type="Script" path="res://Interfaces/mask.gd" id="2_1wb65"]
@@ -12,17 +13,21 @@
 [ext_resource type="Texture2D" uid="uid://d0trfisxu88aa" path="res://Assets/openart/mini_map/55.png" id="10_2bb24"]
 [ext_resource type="Texture2D" uid="uid://bcg04yhswqd5m" path="res://Assets/openart/mini_map/45.png" id="11_8ewg1"]
 [ext_resource type="Texture2D" uid="uid://b6372gqsisc5k" path="res://Assets/openart/mini_map/36.png" id="12_7dy1y"]
-[ext_resource type="FontFile" uid="uid://duk3lygtddcxa" path="res://Assets/h_NokiaCellphoneFC.ttf" id="13_bsswb"]
 [ext_resource type="Texture2D" uid="uid://cl5bklp1bvs8i" path="res://Assets/openart/mini_map/8.png" id="13_nxbkr"]
 [ext_resource type="Texture2D" uid="uid://qrecc1pwqyyx" path="res://Assets/openart/mini_map/2.png" id="14_mr4j4"]
 [ext_resource type="Texture2D" uid="uid://c5f1xyeom6g4y" path="res://Assets/openart/mini_map/1.png" id="14_tj81d"]
 [ext_resource type="Texture2D" uid="uid://cyrss66ndlwks" path="res://Assets/openart/mini_map/16.png" id="15_07nbn"]
 
 [node name="Minimap_Popup" type="Popup"]
+disable_3d = true
+transparent_bg = true
 initial_position = 2
-size = Vector2i(330, 256)
+title = "Map"
+size = Vector2i(360, 256)
 visible = true
+transparent = true
 content_scale_aspect = 1
+theme = ExtResource("1_7dj0v")
 script = ExtResource("1_juy28")
 
 [node name="mask" type="TextureRect" parent="."]
@@ -220,19 +225,25 @@ texture = ExtResource("14_tj81d")
 stretch_mode = 1
 flip_h = true
 
-[node name="close" type="Button" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+texture_filter = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -50.0
-offset_top = -31.0
+offset_left = -96.0
+offset_top = -22.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_fonts/font = ExtResource("13_bsswb")
+
+[node name="close" type="Button" parent="MarginContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
 text = "Close"
 
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
 [connection signal="visibility_changed" from="mask" to="mask" method="_on_visibility_changed"]
-[connection signal="pressed" from="close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="MarginContainer/close" to="." method="_on_close_pressed"]

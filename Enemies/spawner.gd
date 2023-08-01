@@ -28,8 +28,6 @@ func spawn():
 	print('index: ' + str(index) + ' spawn_point: ' + str(spawn_points_list[index]))
 	scene_instance.global_position.y = global_position.y + spawn_points_list[index]
 	scene_instance.direction = -1 if from_left else 1
-	
-
 
 func _on_spawn_timer_timeout():
 	spawn()

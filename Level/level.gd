@@ -16,18 +16,17 @@ func set_player_arrival(node_paths_array):
 	
 	for node_path in node_paths_array:
 		
-		if node_path.is_empty() == false:
-			
+		if not node_path.is_empty():
+			print('Last_SCENE: ', GAME_MANAGER.location.last_scene, ' NodePATH: ', node_path.get_name(0))
 			if GAME_MANAGER.location.last_scene == node_path.get_name(0):
 				is_founded = true
-				print('Hola desde site.get_name and last_scene: ' + node_path.get_name(0))	
+				print('Get_name and last_scene: ' + node_path.get_name(0))	
 				var node = get_node(node_path)
 				# Definir el tipo Change room
-				# Tipo Vertical
 				if GAME_MANAGER.is_vertical:
-					PLAYER.position.y = node.position.y
-				else:# Horizontal
-					PLAYER.position.x = node.global_position.x
+					PLAYER.global_position.y = node.global_position.y
+				else:
+					PLAYER.global_position.x = node.global_position.x
 				break
 			
 		else:			
@@ -35,8 +34,7 @@ func set_player_arrival(node_paths_array):
 	
 	return is_founded
 
-func _ready():
-	
+func set_BGM():
 	var stream : AudioStream = BGM.stream
 	if stream != null and bgm_stream != null:
 		if stream.resource_path != bgm_stream.resource_path:
@@ -45,28 +43,29 @@ func _ready():
 			BGM.play()
 	else:
 		print('no existe stream')
-	
-	if GAME_MANAGER.is_loaded_from_disk:
-		pass
-	else:	
-		if not set_player_arrival(arrivals):
-			PLAYER.position = default_position
-			print('Asegurese de nombrar bien los Markers - ignore si es nueva campaña')
-	
-	
+
+func set_camera_limits():
 	CAMERA.limit_left = limit_left
 	CAMERA.limit_top = limit_top
 	CAMERA.limit_right = limit_right
 	CAMERA.limit_bottom = limit_bottom
 
+func _ready():
+	set_BGM()		
+	set_camera_limits()
+	
+	print('LOADED_FROM_DISK: ', GAME_MANAGER.is_loaded_from_disk, ' PLAYER_ARRIVALS: ', set_player_arrival(arrivals))
+	
+	if not GAME_MANAGER.is_loaded_from_disk and not set_player_arrival(arrivals):
+		PLAYER.global_position = default_position
+		print('Asegurese de nombrar bien los Markers - ignore si es nueva campaña: ', default_position)
+	
 	print('GAMEMANAGER last scene: ' + GAME_MANAGER.location.last_scene)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 
 func _on_right_body_entered(body):
 	print('body_name' + body.name + 'is avaliable')
 	get_tree().change_scene_to_file("res://Level/level_2.tscn")
-
 
 func _on_left_room_body_entered(body):
 	print('Left room body entered: ' + body.name)

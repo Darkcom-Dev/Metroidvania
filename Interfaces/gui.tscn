@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dhstuvkjpndrp" path="res://Assets/health_bar.png" id="2_cochn"]
 [ext_resource type="FontFile" uid="uid://duk3lygtddcxa" path="res://Assets/h_NokiaCellphoneFC.ttf" id="2_hbvqq"]
 [ext_resource type="Texture2D" uid="uid://bdyaklbk7lbli" path="res://Assets/health_bar_bar.png" id="3_ssjbk"]
-[ext_resource type="LabelSettings" uid="uid://cysg3dgy7bb23" path="res://Assets/pause_label_settings.tres" id="6_up4a2"]
+[ext_resource type="Theme" uid="uid://cj3dqg16ymw3k" path="res://Interfaces/isekai.tres" id="6_sykhm"]
 [ext_resource type="PackedScene" uid="uid://bvp5nggx3l4m2" path="res://Level/room_template.tscn" id="7_q8i4v"]
 [ext_resource type="PackedScene" uid="uid://mvx8icctge75" path="res://Interfaces/options_popup.tscn" id="8_o3k2s"]
 [ext_resource type="PackedScene" uid="uid://dlpvmlbla4bfi" path="res://Interfaces/minimap.tscn" id="9_v5epj"]
@@ -219,7 +219,7 @@ wait_time = 2.0
 one_shot = true
 
 [node name="Pause" type="Control" parent="."]
-visible = false
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -230,17 +230,19 @@ offset_right = -64.0
 offset_bottom = -48.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("6_sykhm")
 
-[node name="BGPause" type="ColorRect" parent="Pause"]
+[node name="Panel" type="Panel" parent="Pause"]
+custom_minimum_size = Vector2(300, 128)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0.156863, 0.184314, 1)
 
-[node name="Margin_pause" type="MarginContainer" parent="Pause"]
+[node name="Margin_pause" type="MarginContainer" parent="Pause/Panel"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -252,82 +254,95 @@ offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="HBoxContainer" parent="Pause/Margin_pause"]
+[node name="VBoxContainer" type="HBoxContainer" parent="Pause/Panel/Margin_pause"]
 layout_mode = 2
 alignment = 1
 
-[node name="Stats" type="VBoxContainer" parent="Pause/Margin_pause/VBoxContainer"]
+[node name="Stats" type="VBoxContainer" parent="Pause/Panel/Margin_pause/VBoxContainer"]
 layout_mode = 2
 
-[node name="HP_maxHP" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats"]
+[node name="HP_maxHP" type="Label" parent="Pause/Panel/Margin_pause/VBoxContainer/Stats"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "HP / max HP"
-label_settings = ExtResource("6_up4a2")
 
-[node name="MP_maxMP" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats"]
+[node name="MP_maxMP" type="Label" parent="Pause/Panel/Margin_pause/VBoxContainer/Stats"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "MP / Max MP"
-label_settings = ExtResource("6_up4a2")
 
-[node name="LV" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats"]
+[node name="LV" type="Label" parent="Pause/Panel/Margin_pause/VBoxContainer/Stats"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "Level : stats.LV"
-label_settings = ExtResource("6_up4a2")
 
-[node name="XP" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats"]
+[node name="XP" type="Label" parent="Pause/Panel/Margin_pause/VBoxContainer/Stats"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "XP : Stats.XP"
-label_settings = ExtResource("6_up4a2")
 
-[node name="Next_LV" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats"]
+[node name="Next_LV" type="Label" parent="Pause/Panel/Margin_pause/VBoxContainer/Stats"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "Next LV : Stats.max_XP"
-label_settings = ExtResource("6_up4a2")
 
-[node name="Coins" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats"]
+[node name="Coins" type="Label" parent="Pause/Panel/Margin_pause/VBoxContainer/Stats"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "Coins: stats.coins"
-label_settings = ExtResource("6_up4a2")
 
-[node name="Stats2" type="VBoxContainer" parent="Pause/Margin_pause/VBoxContainer"]
+[node name="Stats2" type="VBoxContainer" parent="Pause/Panel/Margin_pause/VBoxContainer"]
 layout_mode = 2
 
-[node name="STR" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats2"]
+[node name="STR" type="Label" parent="Pause/Panel/Margin_pause/VBoxContainer/Stats2"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "STR : stats.STR"
-label_settings = ExtResource("6_up4a2")
 
-[node name="DEF" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats2"]
+[node name="DEF" type="Label" parent="Pause/Panel/Margin_pause/VBoxContainer/Stats2"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "DEF : stats.DEF"
-label_settings = ExtResource("6_up4a2")
 
-[node name="INT" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats2"]
+[node name="INT" type="Label" parent="Pause/Panel/Margin_pause/VBoxContainer/Stats2"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "INT : stats.INT"
-label_settings = ExtResource("6_up4a2")
 
-[node name="LCK" type="Label" parent="Pause/Margin_pause/VBoxContainer/Stats2"]
+[node name="LCK" type="Label" parent="Pause/Panel/Margin_pause/VBoxContainer/Stats2"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "LCK : stats.LCK"
-label_settings = ExtResource("6_up4a2")
 
-[node name="Menu" type="VBoxContainer" parent="Pause/Margin_pause/VBoxContainer"]
+[node name="Menu" type="VBoxContainer" parent="Pause/Panel/Margin_pause/VBoxContainer"]
 layout_mode = 2
 
-[node name="Resume" type="Button" parent="Pause/Margin_pause/VBoxContainer/Menu"]
+[node name="Resume" type="Button" parent="Pause/Panel/Margin_pause/VBoxContainer/Menu"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_hbvqq")
 text = "Resume"
 
-[node name="Options" type="Button" parent="Pause/Margin_pause/VBoxContainer/Menu"]
+[node name="Options" type="Button" parent="Pause/Panel/Margin_pause/VBoxContainer/Menu"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_hbvqq")
 text = "Options"
 
-[node name="Main_Menu" type="Button" parent="Pause/Margin_pause/VBoxContainer/Menu"]
+[node name="Main_Menu" type="Button" parent="Pause/Panel/Margin_pause/VBoxContainer/Menu"]
+texture_filter = 1
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_hbvqq")
 text = "Main Menu"
 
 [node name="Room_Template" parent="." instance=ExtResource("7_q8i4v")]
@@ -347,6 +362,6 @@ visible = false
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="animation_finished" from="GameOver_fadein" to="." method="_on_game_over_fadein_animation_finished"]
 [connection signal="timeout" from="message_timer" to="." method="_on_message_timer_timeout"]
-[connection signal="pressed" from="Pause/Margin_pause/VBoxContainer/Menu/Resume" to="." method="_on_resume_pressed"]
-[connection signal="pressed" from="Pause/Margin_pause/VBoxContainer/Menu/Options" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="Pause/Margin_pause/VBoxContainer/Menu/Main_Menu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="Pause/Panel/Margin_pause/VBoxContainer/Menu/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Pause/Panel/Margin_pause/VBoxContainer/Menu/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Pause/Panel/Margin_pause/VBoxContainer/Menu/Main_Menu" to="." method="_on_main_menu_pressed"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdr12obcrrsax"
-path="res://.godot/imported/mockup.png-ebfbb356280bab5bc7b768402743e242.ctex"
+uid="uid://ob44cqdi674m"
+path="res://.godot/imported/grabber_disabled.png-f281aafa06b1dba1581e16164514153e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Jungle Asset Pack/Jungle Asset Pack/mockup.png"
-dest_files=["res://.godot/imported/mockup.png-ebfbb356280bab5bc7b768402743e242.ctex"]
+source_file="res://Interfaces/grabber_disabled.png"
+dest_files=["res://.godot/imported/grabber_disabled.png-f281aafa06b1dba1581e16164514153e.ctex"]
 
 [params]
 

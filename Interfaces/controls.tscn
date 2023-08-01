@@ -1,20 +1,26 @@
-[gd_scene load_steps=6 format=3 uid="uid://bhyhkrmr77cos"]
+[gd_scene load_steps=7 format=3 uid="uid://bhyhkrmr77cos"]
 
+[ext_resource type="Theme" uid="uid://cj3dqg16ymw3k" path="res://Interfaces/isekai.tres" id="1_6i8yr"]
 [ext_resource type="Script" path="res://Interfaces/controls.gd" id="1_h4e3s"]
 [ext_resource type="Texture2D" uid="uid://dwksddhfgcgcm" path="res://Assets/Treasure Hunters/Treasure Hunters/Wood and Paper UI/Sprites/Yellow Paper/5.png" id="1_xw6x5"]
 [ext_resource type="LabelSettings" uid="uid://cysg3dgy7bb23" path="res://Assets/pause_label_settings.tres" id="2_r87cg"]
 [ext_resource type="FontFile" uid="uid://bjwhnk1s4hvc6" path="res://Assets/at01explus.ttf" id="3_0ldib"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_c3p6b"]
+line_spacing = 2.0
 font = ExtResource("3_0ldib")
 font_color = Color(0.12549, 0.827451, 1, 1)
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
 [node name="Controls" type="Popup"]
+disable_3d = true
+transparent_bg = true
 title = "Instructions"
 size = Vector2i(266, 256)
 visible = true
+content_scale_aspect = 1
+theme = ExtResource("1_6i8yr")
 script = ExtResource("1_h4e3s")
 
 [node name="Background" type="TextureRect" parent="."]
@@ -63,11 +69,12 @@ Pause Menu: Enter key or Start Button
 Map: M key or Select Button"
 label_settings = SubResource("LabelSettings_c3p6b")
 
-[node name="Button" type="Button" parent="Background/MarginContainer/VBoxContainer"]
+[node name="close" type="Button" parent="Background/MarginContainer/VBoxContainer"]
 process_mode = 3
+texture_filter = 1
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_0ldib")
 text = "Close"
 
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
-[connection signal="pressed" from="Background/MarginContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Background/MarginContainer/VBoxContainer/close" to="." method="_on_button_pressed"]

@@ -6,7 +6,7 @@ extends CharacterBody2D
 @export var walk_speed : int = 128
 @export var jump_velocity : int = -300
 @export var bouncing_jump : int = -256 # Esta es la fuerza de rebote de las paredes
-@export var extra_force_jump : = 7
+@export var extra_force_jump : float = 7.5
 # Distancia de detecion de enemigo
 const CAST_ENEMY : int = 32
 # Comprobaciones de acciones
@@ -45,22 +45,80 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 # STATE MACHINE
 @onready var playback : AnimationNodeStateMachinePlayback = $anim_tree.get("parameters/playback")
 
+
+func reset_character():
+	velocity = Vector2.ZERO
+	var cam_pos_diff = Vector2(CAMERA.limit_right-CAMERA.limit_left, CAMERA.limit_bottom - CAMERA.limit_top)
+	var cam_pos = Vector2(CAMERA.limit_right, CAMERA.limit_bottom)
+	var viewport_size = Vector2(ProjectSettings.get_setting('display/window/size/viewport_width')/2,ProjectSettings.get_setting('display/window/size/viewport_height')/2)
+	position = cam_pos - cam_pos_diff/2
+	state = 'normal'
+	is_altered_state = false
+	jump_counter = 0
+	print_debug('velocity: ' + str(velocity), 'position' + str(position))
+
 func _ready():
 	
 	$anim_tree.active = true
 	# OJO aqui: El personaje no debe actualizar la salud al cargar
 	GAME_MANAGER.stats.HP = health 
 
-
 func _physics_process(delta):
 	
-	if Input.is_action_just_pressed('Pause'):
-		GUI.pause()
-	if Input.is_action_just_pressed('Map'):
-		GUI.map()
+	if Input.is_action_just_pressed('Pause'):		GUI.pause()
+	if Input.is_action_just_pressed('Map'):		GUI.map()
 	
 	altered_state_control()
 	
+	jump_cotrol(delta)			
+		
+	# Reinicia el contador de saltos
+	if is_on_ceiling(): jump_counter = 1
+	elif is_on_floor() or not is_on_wall_only():jump_counter = 0
+		
+	# Variables de direccion y facing
+	vertical_direction = Input.get_axis("ui_down", "ui_up")
+	status.can_move = not status.is_attacking or not status.dashing # dash anim
+	if status.can_move:
+		direction = Input.get_axis("ui_left", "ui_right")
+	
+	if direction == -1:		facing = -1
+	elif direction == 1:		facing = 1
+	
+	cross_platform()
+	
+	# Handle Jump.
+	if Input.is_action_just_pressed("Jump") and (is_on_floor())and vertical_direction != -1 and not status.dashing:
+		velocity.y = jump_velocity
+		$Jump.play()
+		
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+			
+	if not status.is_hurting and not status.dashing:
+		velocity.x = direction * walk_speed if direction and status.can_move else move_toward(velocity.x, 0, walk_speed)
+		
+	# Emision de particulas de polvo
+	if direction != 0:		$Dust.emitting = is_on_floor() or is_on_wall_only()
+		
+	animation_control()	
+	ray_attack_control()
+	if Input.is_action_just_pressed('Attack'):		attack()	
+	move_and_slide()
+	
+	status.can_dash = not status.dashing #and is_on_floor()
+	# la condicion es que no este en dash y que no se ejecute en el aire
+	if Input.is_action_just_pressed("Dash"):dash_control()
+	if GAME_MANAGER.skills['wall_jump']:wall_jump()
+
+func altered_state_control():
+	if is_altered_state == false and state != 'normal':		
+		if PLAYER.state in ['poisoned','petrified','cursed']:
+			$state_effect_timer.start()
+			print('player state: ' + state)
+		is_altered_state = true
+		
+func jump_cotrol(delta):
 	# Add friction on wall
 	if is_on_wall_only() and velocity.y >= -16 and GAME_MANAGER.skills['wall_jump']:
 		velocity.y += gravity/8 * delta
@@ -76,59 +134,6 @@ func _physics_process(delta):
 		if Input.is_action_pressed("Jump") and playback.get_current_node() == 'Jump':
 			velocity.y -= extra_force_jump
 			
-		
-	# Reinicia el contador de saltos
-	if is_on_ceiling(): jump_counter = 1
-	elif is_on_floor() or not is_on_wall_only():jump_counter = 0
-		
-	# Variables de direccion y facing
-	vertical_direction = Input.get_axis("ui_down", "ui_up")
-	status.can_move = not status.is_attacking or not status.dashing # dash anim
-	if status.can_move:
-		direction = Input.get_axis("ui_left", "ui_right")
-	
-	if direction == -1:
-		facing = -1
-	elif direction == 1:
-		facing = 1
-	
-	cross_platform()
-	
-	# Handle Jump.
-	if Input.is_action_just_pressed("Jump") and (is_on_floor())and vertical_direction != -1 and not status.dashing:
-		velocity.y = jump_velocity
-		$Jump.play()
-		
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-		
-
-	
-	if not status.is_hurting and not status.dashing:
-		velocity.x = direction * walk_speed if direction and status.can_move else move_toward(velocity.x, 0, walk_speed)
-		
-	# Emision de particulas de polvo
-	if direction != 0:
-		$Dust.emitting = is_on_floor() or is_on_wall_only()
-		
-	animation_control()	
-	ray_attack_control()
-	if Input.is_action_just_pressed('Attack'):		attack()	
-	move_and_slide()
-	
-	status.can_dash = not status.dashing #and is_on_floor()
-	# la condicion es que no este en dash y que no se ejecute en el aire
-	if Input.is_action_just_pressed("Dash"):dash_control()
-	if GAME_MANAGER.skills['wall_jump']:wall_jump()
-
-func altered_state_control():
-	if is_altered_state == false and state != 'normal':
-		
-		if PLAYER.state in ['poisoned','petrified','cursed']:
-			$state_effect_timer.start()
-			print('player state: ' + state)
-		is_altered_state = true
-		
 func dash_control():
 	if is_on_floor_only() and status.can_dash and GAME_MANAGER.skills['dash']:
 		playback.travel('Hit') # Funciona solo despues de move_and_slide

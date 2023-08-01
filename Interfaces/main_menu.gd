@@ -1,32 +1,17 @@
 extends CanvasLayer
 
-
 @export var first_scene : String
 
-# Usado para el reinicio de los stats
-var stats : Dictionary = {
-	'HP':8,
-	'max_HP':8,
-	'MP':8,
-	'max_MP' : 8,
-	'XP':1,
-	'max_XP':8,
-	'LV':1,
-	'coins': 0,
-	'STR' : 4,
-	'DEF' : 4,
-	'INT' : 8,
-	'LCK' : 8
-}
-# Player skills
-var skills : Dictionary = {
-	'wall_jump' : false, 
-	'dash' : false,
-	'wide_attack' : false
-	}
-# Called when the node enters the scene tree for the first time.
+func reset_position_player():
+	PLAYER.set_process(false)
+	PLAYER.reset_character()
+	PLAYER.visible = false
+	PLAYER.set_process(true)
+	CAMERA.position = PLAYER.position
+	print_debug(PLAYER.global_position)
+
 func _ready():
-	
+	reset_position_player()
 	PLAYER.set_process(false) 
 	CAMERA.set_process(false)
 	GUI.set_process(false) 
@@ -34,60 +19,46 @@ func _ready():
 	# FadeIN animation
 	$Fade_in.play("RESET")
 	$Fade_in.play("Fade_in")
-	
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):	pass
-
-
-func _on_start_pressed():
-	PLAYER.set_process(true)
-	#PLAYER.disable_platform_check()
-	PLAYER.visible = true
-	CAMERA.set_process(true)
+	$VBoxContainer2/Menu/Start.grab_focus()
+		
+func restart_GUI():
+	# GUI
 	GUI.set_process(true)
 	GUI.visible = true
 	GUI.reset_gui()
-	GAME_MANAGER.stats = stats
-	GAME_MANAGER.skills = skills
-	GAME_MANAGER._current_XP = 0
-	GAME_MANAGER._current_LV = 1
-	
-	get_tree().change_scene_to_file(first_scene)
+
+func load_scene(scene : String):
+	get_tree().change_scene_to_file(scene)
+	print('loaded_scene: ' + str(scene))
 	get_tree().paused = false
-	
+
+func restart_player(pos : Vector2):
+	#Player
+	PLAYER.set_process(true)
+	PLAYER.visible = true
+	PLAYER.global_position = pos
+
+func _on_start_pressed():
+	restart_player(PLAYER.global_position)
+	CAMERA.set_process(true)
+	restart_GUI()
+	# Stats
+	GAME_MANAGER.restart_data(false)
+	load_scene(first_scene)	
 
 func _on_continue_pressed():
-	GAME_MANAGER.load_data()
-	PLAYER.set_process(true)
-	#PLAYER.disable_platform_check()
-	PLAYER.visible = true
+	restart_player(GAME_MANAGER.location.last_checkpoint + (Vector2.UP * 10))
 	CAMERA.set_process(true)
-	GUI.set_process(true)
-	GUI.visible = true
-	GUI.reset_gui()	
-	
-	PLAYER.position = GAME_MANAGER.location.last_checkpoint + (Vector2.UP * 10)
-	GAME_MANAGER.is_loaded_from_disk = true
-	#print('GAME_MANAGER checkpoint_scene: ' + str(GAME_MANAGER.location.checkpoint_scene))
-	get_tree().change_scene_to_file(GAME_MANAGER.location.checkpoint_scene)
-	get_tree().paused = false
-	
+	# GUI
+	restart_GUI()	
+	GAME_MANAGER.restart_data(true)
+	load_scene(GAME_MANAGER.location.checkpoint_scene)	
 	
 func _on_exit_pressed():
 	get_tree().quit()
-	print('Hola desde exit')
-
-
-func _on_fade_in_animation_finished(anim_name):
-	if anim_name == 'Fade_in':
-		pass
-		
-
+	
 func _on_options_pressed():
 	$Options_popup.visible = true
-
 
 func _on_controls_pressed():
 	$Controls.visible = true

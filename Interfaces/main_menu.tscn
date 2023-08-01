@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://wh5war4sg88t"]
+[gd_scene load_steps=19 format=3 uid="uid://wh5war4sg88t"]
 
 [ext_resource type="Script" path="res://Interfaces/main_menu.gd" id="1_8ysni"]
 [ext_resource type="FontFile" uid="uid://duk3lygtddcxa" path="res://Assets/h_NokiaCellphoneFC.ttf" id="2_0xnj4"]
 [ext_resource type="Texture2D" uid="uid://cy7e43ke0g1oj" path="res://Assets/openart/Main_menu.png" id="2_4gyl4"]
+[ext_resource type="Theme" uid="uid://cj3dqg16ymw3k" path="res://Interfaces/isekai.tres" id="3_nvo1o"]
 [ext_resource type="PackedScene" uid="uid://mvx8icctge75" path="res://Interfaces/options_popup.tscn" id="4_ipd3m"]
 [ext_resource type="PackedScene" uid="uid://bhyhkrmr77cos" path="res://Interfaces/controls.tscn" id="5_2aq7j"]
 
@@ -90,16 +91,16 @@ events = [SubResource("InputEventKey_51w33")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_asx2u"]
 device = -1
-keycode = 51
-unicode = 51
+keycode = 52
+unicode = 52
 
 [sub_resource type="Shortcut" id="Shortcut_lvj6b"]
 events = [SubResource("InputEventKey_asx2u")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_4n5n2"]
 device = -1
-keycode = 52
-unicode = 52
+keycode = 53
+unicode = 53
 
 [sub_resource type="Shortcut" id="Shortcut_b8ugw"]
 events = [SubResource("InputEventKey_4n5n2")]
@@ -107,7 +108,7 @@ events = [SubResource("InputEventKey_4n5n2")]
 [node name="Main_menu" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_8ysni")
-first_scene = "res://Level/level.tscn"
+first_scene = "res://Level/level_4.tscn"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -138,6 +139,7 @@ offset_right = -256.0
 offset_bottom = -104.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("3_nvo1o")
 
 [node name="Title" type="Label" parent="VBoxContainer2"]
 texture_filter = 1
@@ -147,7 +149,6 @@ label_settings = SubResource("LabelSettings_wfm8i")
 horizontal_alignment = 1
 
 [node name="Menu" type="VBoxContainer" parent="VBoxContainer2"]
-clip_contents = true
 layout_mode = 2
 
 [node name="Start" type="Button" parent="VBoxContainer2/Menu" node_paths=PackedStringArray("shortcut_context")]
@@ -158,7 +159,10 @@ Nota:
 Guardar datos en un checkpoint
 borrará los datos ya existentes
 del ultimo checkpoint."
+focus_neighbor_bottom = NodePath("../Continue")
 focus_next = NodePath("../Continue")
+focus_previous = NodePath("../Exit")
+focus_mode = 1
 shortcut_context = NodePath("..")
 theme_override_fonts/font = ExtResource("2_0xnj4")
 shortcut = SubResource("Shortcut_ebv74")
@@ -168,6 +172,7 @@ text = "Start"
 texture_filter = 1
 layout_mode = 2
 tooltip_text = "Inicia el juego desde el ultimo checkpoint"
+focus_neighbor_top = NodePath("../Start")
 focus_next = NodePath("../Options")
 focus_previous = NodePath("../Start")
 theme_override_fonts/font = ExtResource("2_0xnj4")
@@ -179,7 +184,9 @@ text = "Continue
 texture_filter = 1
 layout_mode = 2
 tooltip_text = "Ajusta las opciones de juego"
-focus_next = NodePath("../Exit")
+focus_neighbor_top = NodePath("../Continue")
+focus_neighbor_bottom = NodePath("../Controls")
+focus_next = NodePath("../Controls")
 focus_previous = NodePath("../Continue")
 theme_override_fonts/font = ExtResource("2_0xnj4")
 shortcut = SubResource("Shortcut_lvj6b")
@@ -188,9 +195,11 @@ text = "Options"
 [node name="Controls" type="Button" parent="VBoxContainer2/Menu"]
 texture_filter = 1
 layout_mode = 2
-tooltip_text = "Ajusta las opciones de juego"
+tooltip_text = "Instrucciones de como jugar"
+focus_neighbor_top = NodePath("../Options")
+focus_neighbor_bottom = NodePath("../Exit")
 focus_next = NodePath("../Exit")
-focus_previous = NodePath("../Continue")
+focus_previous = NodePath("../Options")
 theme_override_fonts/font = ExtResource("2_0xnj4")
 shortcut = SubResource("Shortcut_lvj6b")
 text = "Controls"
@@ -199,7 +208,10 @@ text = "Controls"
 texture_filter = 1
 layout_mode = 2
 tooltip_text = "Sale de la aplicación"
-focus_previous = NodePath("../Options")
+focus_neighbor_top = NodePath("../Controls")
+focus_neighbor_bottom = NodePath("../Start")
+focus_next = NodePath("../Start")
+focus_previous = NodePath("../Controls")
 theme_override_fonts/font = ExtResource("2_0xnj4")
 shortcut = SubResource("Shortcut_b8ugw")
 text = "Exit"
@@ -207,7 +219,7 @@ text = "Exit"
 [node name="version" type="Label" parent="VBoxContainer2"]
 texture_filter = 1
 layout_mode = 2
-text = "v 0.1 alpha"
+text = "v 0.2 alpha"
 label_settings = SubResource("LabelSettings_wfm8i")
 horizontal_alignment = 2
 
@@ -217,7 +229,6 @@ visible = false
 [node name="Controls" parent="." instance=ExtResource("5_2aq7j")]
 visible = false
 
-[connection signal="animation_finished" from="Fade_in" to="." method="_on_fade_in_animation_finished"]
 [connection signal="pressed" from="VBoxContainer2/Menu/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="VBoxContainer2/Menu/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="VBoxContainer2/Menu/Options" to="." method="_on_options_pressed"]
